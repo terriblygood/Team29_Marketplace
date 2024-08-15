@@ -11,7 +11,7 @@ const ProductList: React.FC = () => {
   useEffect(() => {
     // Заглушка для загрузки продуктов с бэкенда
     const fetchProducts = async () => {
-      // Здесь вы можете выполнить запрос на API
+      // Здесь выполняем запрос на API
       const response = [
         { id: 1, name: 'Товар 1', price: 100, imageUrl: 'https://via.placeholder.com/150' },
         { id: 2, name: 'Товар 2', price: 200, imageUrl: 'https://via.placeholder.com/150' },
