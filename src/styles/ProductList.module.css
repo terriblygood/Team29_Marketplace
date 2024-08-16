@@ -30,3 +30,18 @@
     font-size: 16px;
     color: #0099cc;
   }
+  
+  .addToCartButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #00cc66;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .addToCartButton:hover {
+    background-color: #009944;
+  }
