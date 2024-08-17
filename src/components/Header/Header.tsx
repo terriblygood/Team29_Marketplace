@@ -1,10 +1,10 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../store/store';
-import styles from '../styles/Header.module.css';
-import profileIcon from '../assets/profile-icon.svg';
-import cartIcon from '../assets/cart-icon.svg';
+import React from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "../../store/store";
+import styles from "./Header.module.scss";
+import profileIcon from "../../assets/profile-icon.svg";
+import cartIcon from "../../assets/cart-icon.svg";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.logo} onClick={() => navigate('/')}>
+      <div className={styles.logo} onClick={() => navigate("/")}>
         Веб-Ларёк
       </div>
       <div className={styles.icons}>
@@ -22,9 +22,12 @@ const Header: React.FC = () => {
           src={profileIcon}
           alt="Profile"
           className={styles.icon}
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate("/profile")}
         />
-        <div className={styles.cartIconWrapper} onClick={() => navigate('/cart')}>
+        <div
+          className={styles.cartIconWrapper}
+          onClick={() => navigate("/cart")}
+        >
           <img src={cartIcon} alt="Cart" className={styles.icon} />
           {uniqueItemCount > 0 && (
             <div className={styles.cartBadge}>{uniqueItemCount}</div>

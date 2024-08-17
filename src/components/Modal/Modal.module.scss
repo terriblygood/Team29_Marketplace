@@ -1,0 +1,82 @@
+.modal {
+  height: 100dvh;
+  width: 100dvw;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0);
+}
+
+.active {
+  height: 100dvh;
+  width: 100dvw;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1);
+  z-index: 999;
+}
+
+.modalContent {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px;
+  border-radius: 12px;
+  background-color: white;
+  min-height: 15rem;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: fit-content;
+  height: 32px;
+}
+
+.close:hover {
+  animation: rotate .5s
+}
+
+.link {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.link:hover {
+  color: green;
+}
+
+.link:focus,
+.link:active {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.icon{
+	width: 2rem;
+	height: auto;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}

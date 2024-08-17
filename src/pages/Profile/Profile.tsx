@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../styles/Profile.module.css'; 
+import styles from './Profile.module.scss'; 
 
 const Profile: React.FC = () => {
   const [email, setEmail] = useState('');
