@@ -27,22 +27,15 @@ export type ColorTypes =
   | undefined;
 
 export type ThingType = {
-  id: number;
-  userId: number;
-  categoryId: number;
-  thingName: string;
+  id: string;
+  name: string;
   description: string;
-  thingAddress: string;
-  thingLat: number;
-  thingLon: number;
-  startDate: Date;
-  endDate: Date;
-  isApproved: boolean;
-  inDeal: boolean;
-  // User: ShortUserType;
-  Category: { categoryTitle: string };
-  // Photos: PhotoType[];
-  issue?: string;
+  color: string;
+  size: string;
+  count: number;
+  price: number;
+  category: string;
+  brand: string;
 };
 
 export type NotType = {
