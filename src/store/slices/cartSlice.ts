@@ -12,7 +12,7 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  items: [],
+  items: JSON.parse(localStorage.getItem('cartItems') || '[]'),
 };
 
 const cartSlice = createSlice({

@@ -3,32 +3,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { setProducts } from "../../store/slices/productsSlice";
 import { addItemToCart } from "../../store/slices/cartSlice";
+import FilterSidebar from "../FilterSidebar/FilterSidebar";
 import styles from "./ProductList.module.scss";
 
 const ProductList: React.FC = () => {
   const dispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.products.items);
+  const products = useSelector((state: RootState) => state.products.filteredItems);
 
   useEffect(() => {
-    // Заглушка для загрузки продуктов с бэкенда
     const fetchProducts = async () => {
-      const response = [
-        {
-          id: 1,
-          name: "Товар 1",
-          price: 100,
-          imageUrl:
-            "https://main-cdn.sbermegamarket.ru/big1/hlr-system/-21/075/684/596/201/113/100033352602b0.jpg",
-        },
-        {
-          id: 2,
-          name: "Товар 2",
-          price: 200,
-          imageUrl:
-            "https://main-cdn.sbermegamarket.ru/big1/hlr-system/-21/075/684/596/201/113/100033352602b0.jpg",
-        },
-      ];
-      dispatch(setProducts(response));
+      try {
+        const response = await fetch("https://29-t1api.gortem.ru/products/catalog");
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+        const data = await response.json();
+        const formattedData = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          category: item.category,
+          inStock: item.count > 0,
+          imageUrl: "", 
+        }));
+        dispatch(setProducts(formattedData));
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
     };
 
     fetchProducts();
@@ -45,24 +46,28 @@ const ProductList: React.FC = () => {
   };
 
   return (
-    <div className={styles.productList}>
-      {products.map((product) => (
-        <div key={product.id} className={styles.productCard}>
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className={styles.productImage}
-          />
-          <h3 className={styles.productName}>{product.name}</h3>
-          <p className={styles.productPrice}>${product.price}</p>
-          <button
-            className={styles.addToCartButton}
-            onClick={() => handleAddToCart(product)}
-          >
-            В корзину
-          </button>
-        </div>
-      ))}
+    <div className={styles.productPage}>
+      <FilterSidebar />
+      <div className={styles.productList}>
+        {products.map((product) => (
+          <div key={product.id} className={styles.productCard}>
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className={styles.productImage}
+            />
+            <h3 className={styles.productName}>{product.name}</h3>
+            <p className={styles.productPrice}>${product.price}</p>
+            <button
+              className={styles.addToCartButton}
+              onClick={() => handleAddToCart(product)}
+              disabled={!product.inStock}
+            >
+              В корзину
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

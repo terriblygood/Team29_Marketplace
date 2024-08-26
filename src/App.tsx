@@ -29,8 +29,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<ProductList />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/profile" element={<Profile />} />{" "}
-          {/* Add the new route */}
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </Router>
