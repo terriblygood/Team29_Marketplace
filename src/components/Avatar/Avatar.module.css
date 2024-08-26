@@ -1,0 +1,29 @@
+.avatar {
+    border-radius: 50%;
+    /* border: 5px solid var( --color-btn-font-neutral); */
+    overflow: hidden;
+
+     /* сей костыль добавлен ибо буквы комфорты блин кривые*/
+    position: relative;
+}
+
+.img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.letter {
+    /* width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;*/
+    
+    /* сей костыль добавлен ибо буквы комфорты блин кривые*/
+    position: absolute; 
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: var(--brown);
+}

@@ -19,3 +19,105 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+
+  /* color-scheme: light dark; */
+
+  /* font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%; */
+
+
+  --transition-duration: 0.5s;
+
+  --card-width: 280px;
+  --card-height: 200px;
+
+  --little-card-width: 175px;
+  --little-card-height: 125px;
+
+  --dark-olive: #566B30;
+  --light-olive: #A9A453;
+  --olive: #8DA057;
+  --light-beige: #F1E4D4;
+  --dark-beige: #B37A47;
+  --black: #151618;
+  --light-black: #343232;
+  --brown: #635959;
+  --gray: #D9D9D9;
+  --red: #B34747;
+  --font-white: #fff;
+
+  --red-86: #b34747db;
+
+  --dark-olive-75: #566B30c0;
+  --light-olive-75: #A9A453c0;
+  --olive-75: #8DA057c0;
+  --light-beige-75: #F1E4D4c0;
+  --dark-beige-75: #B37A47c0;
+  --black-75: #151618c0;
+  --light-black-75: #343232c0;
+  --brown-75: #635959c0;
+  --gray-75: #D9D9D9c0;
+  --red-75: #B34747c0;
+  --blue-75: #1a2296c0;
+  --violet-75: #6f1777c0;
+
+  --black-50: #15161880;
+  --brown-50: #63595980;
+
+
+
+
+
+
+
+
+  --color-main-black: #000;
+  --color-main-white: #fff;
+
+
+  --color-bg: #ffffff;
+  --color-main: #4fb6e6;
+  --color-main-accent: #a6e93c;
+  --color-secondary: #abebff;
+  --color-secondary-accent: #b9f398;
+  --color-bg-gray: #efe4d4;
+
+
+  --font-main: #151618;
+  --font-accent: #ffffff;
+  --font-secondary: #b4b4b4;
+
+
+  --color-btn-neutral: #84a9ee;
+  --color-btn-danger: #e47474;
+  --color-btn-warning: #f3c38b;
+  --color-btn-good: #88ec99;
+  --color-btn-gray: #c5c5c5;
+
+  --color-btn-font-neutral: #181ab3;
+  --color-btn-font-danger: #881111;
+  --color-btn-font-warning: #7c490e;
+  --color-btn-font-good: #055813;
+  --color-btn-font-gray: #464646;
+
+
+  --color-chip-neutral: #181bb3ad;
+  --color-chip-danger: #881111ad;
+  --color-chip-warning: #d88423ad;
+  --color-chip-good: #13b12dad;
+  --color-chip-gray: #2e2e2ead;
+
+  --color-chip-font-neutral: #181ab3;
+  --color-chip-font-danger: #881111;
+  --color-chip-font-warning: #7c490e;
+  --color-chip-font-good: #055813;
+  --color-chip-font-gray: #464646;
+
+  color: var(--brown);
+  font-size: 1rem;
+}

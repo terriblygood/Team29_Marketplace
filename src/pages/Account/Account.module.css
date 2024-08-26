@@ -1,0 +1,120 @@
+.main {
+  width: 100dvw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.commonInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+/* .avatar {
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50px;
+} */
+
+.avatarDiv {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.center {
+  position: relative;
+  align-self: center;
+}
+
+.header {
+  font-size:large;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  right: -800px;/* Начальная позиция справа за пределами экрана */
+  width: min-content;
+  height: 100%;
+  background-color: var(--light-beige);
+  transition: right 0.3s ease;
+  z-index: 1000; /* Убедитесь, что меню отображается над остальным контентом */
+}
+
+.open {
+  right: 0; /* Когда меню открыто, оно выезжает вправо */
+}
+
+.close {
+  height: 32px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: fit-content;
+}
+
+.close:hover {
+  animation: rotate .5s
+}
+
+.link {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.link:hover {
+  color: var(--olive);
+}
+
+.link:focus,
+.link:active {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.icon{
+	width: 2rem;
+	height: auto;
+}
+
+.menuBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Чем ниже значение alpha, тем более прозрачным будет фон */
+  z-index: 999; /* Убедитесь, что фон находится ниже меню, но выше другого контента */
+}
+
+.menuBackdrop {
+  display: block; /* Показываем фон, когда меню открыто */
+}
+
+.delAvatar{
+  position: absolute;
+  left: 20px;
+  top: 50px;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}

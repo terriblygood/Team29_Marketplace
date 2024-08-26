@@ -1,0 +1,44 @@
+.sidebar {
+    padding: 4rem 5rem; 
+    display: flex;
+    gap: 1rem;
+    /* flex: 0 0 auto; */
+    min-width: min-content;
+    flex-direction: column;
+    width: 25%;
+    >* {
+        color: var(--brown);
+        font-size: 1.125rem;
+    }
+}
+.sidebarWide {
+    padding: 0 8rem; 
+    display: flex;
+    gap: 1rem;
+    flex: 0 0 auto;
+    min-width: min-content;
+    flex-direction: column;
+    width: 40%;
+    
+    >* {
+        color: var(--brown);
+        font-size: 1.125rem;
+    }
+}
+
+/* @media screen and (min-width: 768px) {
+    .sidebar {
+      width: 30%; 
+      overflow: auto;
+    }
+  } */
+
+@media screen and (max-width: 767px) {
+    .sidebar {
+        width: 100%;
+        overflow-x: auto;
+        /* white-space: nowrap; */
+        flex-direction: row;
+        /* display: block; */
+    }
+}
