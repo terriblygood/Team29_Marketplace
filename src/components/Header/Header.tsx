@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { filterProducts } from "../../store/slices/productsSlice";
 import { RootState } from "../../store/store";
 import styles from "./Header.module.scss";
 import profileIcon from "../../assets/profile-icon.svg";
 import cartIcon from "../../assets/cart-icon.svg";
+import Button from "../Button/Button";
+import Account from "../../pages/Account/Account";
+import axios from "axios";
 
 const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,6 +26,9 @@ const Header: React.FC = () => {
     window.location.reload(); // Обновление страницы при клике на логотип(вообще больше для того чтобы сбросить все фильтры)
     //но лучше бы добавить кноч]пку сброса фильтров, так странице не нужно будет перерисовываться
   };
+
+  const [lk, setlk] = useState(false);
+
   return (
     <header className={styles.header}>
       <div className={styles.logo} onClick={handleLogoClick}>
@@ -36,6 +42,7 @@ const Header: React.FC = () => {
         className={styles.searchInput}
       />
       <div className={styles.icons}>
+        <button onClick={() => setlk((prev) => !prev)}>ЛК</button>
         <img
           src={profileIcon}
           alt="Profile"
@@ -52,6 +59,7 @@ const Header: React.FC = () => {
           )}
         </div>
       </div>
+      <Account isOpen={lk} setlk={setlk} />
     </header>
   );
 };
