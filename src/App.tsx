@@ -4,7 +4,7 @@ import Header from "./components/Header/Header";
 import ProductList from "./pages/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
 import Profile from "./pages/Profile/Profile";
-import styles from './App.module.scss'
+import styles from './App.module.scss';
 
 const App: React.FC = () => {
   return (
@@ -14,8 +14,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<ProductList />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/profile" element={<Profile />} />{" "}
-          {/* Add the new route */}
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </Router>
