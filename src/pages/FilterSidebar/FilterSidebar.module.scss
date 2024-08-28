@@ -4,7 +4,20 @@
     border-radius: 10px;
     width: 200px;
     margin-right: 40px;
+    
+    .resetButton {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: rgb(0, 171, 251); 
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
   
+      &:hover {
+        background-color: #0c00f2; 
+      }
     h3 {
       font-size: 18px;
       color: #333;
@@ -51,6 +64,9 @@
         font-weight: bold;
         color: #0099cc;
       }
+      
     }
+    
   }
   
+}
