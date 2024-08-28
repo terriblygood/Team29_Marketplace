@@ -6,7 +6,6 @@ import App from "./App";
 import "./index.scss";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ThemeProvider } from "styled-components";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
