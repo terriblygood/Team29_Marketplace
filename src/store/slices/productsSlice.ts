@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Product {
+export interface Product {
   id: number;
   name: string;
   price: number;
@@ -23,7 +23,7 @@ const initialState: ProductsState = {
   filteredItems: [],
   searchTerm: "",
   selectedCategories: [], 
-  priceRange: [0, 1000],
+  priceRange: [0, 5000],
   inStockOnly: false,
 };
 
@@ -54,10 +54,17 @@ const productsSlice = createSlice({
       state.inStockOnly = action.payload;
       state.filteredItems = applyFilters(state);
     },
+    resetFilters(state) {
+      state.selectedCategories = [];
+      state.priceRange = [0, 5000];
+      state.inStockOnly = false;
+      state.searchTerm = "";
+      state.filteredItems = state.items;
+    },
   },
 });
 
-// Функция применяет все фильтры, насколько она затратна(сделать лучше или убрать и оставить ток базу)
+
 const applyFilters = (state: ProductsState) => {
   let filtered = state.items;
 
@@ -94,6 +101,7 @@ export const {
   filterByCategory,
   filterByPrice,
   filterByAvailability,
+  resetFilters, 
 } = productsSlice.actions;
 
 export default productsSlice.reducer;
