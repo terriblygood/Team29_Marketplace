@@ -9,6 +9,7 @@ import {
 } from "../../store/slices/cartSlice";
 import styles from "./Cart.module.scss";
 import Modal from "../../components/Modal/Modal";
+import axios from "axios";
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,10 @@ const Cart: React.FC = () => {
     (total, item) => total + item.price * item.quantity,
     0
   );
+  const [modalActive, setModalActive] = useState<boolean>(false);
+  const [step, setStep] = useState<number>(1);
+  const [paymentMethod, setPaymentMethod] = useState<"ONLINE" | "ON_DELIVERY" | "">("");
+  const [address, setAddress] = useState<string>("");
 
   const handleClearCart = () => {
     if (cartItems.length > 0) {
@@ -24,7 +29,35 @@ const Cart: React.FC = () => {
     }
   };
 
-  const [modalActive, setModalActive] = useState<boolean>(true);
+  const handleNextStep = () => {
+    setStep((prevStep) => prevStep + 1);
+  };
+
+  const handleOrderSubmit = async () => {
+    const consumerId = "6829157f-3d5e-426d-959a-c6075918c91f";
+
+    try {
+      const promises = cartItems.map((item) =>
+        axios.post("/carts/", {
+          consumerId,
+          productType: item.category.toUpperCase(),
+          productId: item.id,
+          count: item.quantity,
+        })
+      );
+
+      await Promise.all(promises);
+      console.log("Заказ успешно оформлен");
+
+      
+      dispatch(clearCart());
+
+      // (заказ оформлен)
+      setStep(3);
+    } catch (error) {
+      console.error("Ошибка при оформлении заказа:", error);
+    }
+  };
 
   return (
     <div className={styles.cart}>
@@ -65,7 +98,7 @@ const Cart: React.FC = () => {
         <button
           className={styles.checkoutButton}
           disabled={cartItems.length === 0}
-          onClick={() => setModalActive((prev) => !prev)}
+          onClick={() => setModalActive(true)}
         >
           ОФОРМИТЬ
         </button>
@@ -81,8 +114,66 @@ const Cart: React.FC = () => {
       >
         Очистить корзину
       </button>
+
       <Modal active={modalActive} setActive={setModalActive}>
-        <p>Окно оформления заказа оформления</p>
+        <>
+          {step === 1 && (
+            <div>
+              <h3>Подтверждение заказа</h3>
+              <ul>
+                {cartItems.map((item, index) => (
+                  <li key={item.id}>
+                    {index + 1}. {item.name} - {item.quantity} шт. -{" "}
+                    {item.price * item.quantity}$
+                  </li>
+                ))}
+              </ul>
+              <div>Общая сумма: {totalPrice}$</div>
+              <button onClick={handleNextStep}>Далее</button>
+            </div>
+          )}
+          {step === 2 && (
+            <div>
+              <h3>Способ оплаты</h3>
+              <div>
+                <button
+                  onClick={() => setPaymentMethod("ONLINE")}
+                  className={paymentMethod === "ONLINE" ? styles.selected : ""}
+                >
+                  Онлайн
+                </button>
+                <button
+                  onClick={() => setPaymentMethod("ON_DELIVERY")}
+                  className={
+                    paymentMethod === "ON_DELIVERY" ? styles.selected : ""
+                  }
+                >
+                  При получении
+                </button>
+              </div>
+              <div>
+                <label>Адрес доставки</label>
+                <input
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              <button
+                onClick={handleOrderSubmit}
+                disabled={!paymentMethod || !address}
+              >
+                Оплатить
+              </button>
+            </div>
+          )}
+          {step === 3 && (
+            <div>
+              <h3>Заказ оформлен!</h3>
+              <p>С вашего счета списано {totalPrice}$</p>
+            </div>
+          )}
+        </>
       </Modal>
     </div>
   );
