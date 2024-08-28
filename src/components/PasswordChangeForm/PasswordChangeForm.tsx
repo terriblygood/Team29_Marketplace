@@ -115,10 +115,11 @@ export default function PasswordChangeForm({
             value={input.repitePassword}
           />
         </span>
-        <Button onClick={() => void setShowPassword((prev) => !prev)}>
+        <Button onClick={() => void setShowPassword((prev) => !prev)} color="blue">
           Показать пароли
         </Button>
         <Button
+          color="blue"
         // onClick={() => void changePass()}
         >
           Сохранить новый пароль

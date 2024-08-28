@@ -15,10 +15,7 @@ import AvatarChangeForm from "../../components/AvatarChangeForm/AvatarChangeForm
 import MailChahgeForm from "../../components/MailChahgeForm/MailChahgeForm";
 import PhoneChahgeForm from "../../components/PhoneChangeForm/PhoneChangeForm";
 import InitialsChangeForm from "../../components/InitialsChangeForm/InitialsChangeForm";
-import {
-  fetchLogout,
-  fetchUpd,
-} from "../../store/userThunkActions";
+import { fetchLogout, fetchUpd } from "../../store/userThunkActions";
 import closeIcon from "../../assets/close-circle-outline.svg";
 import closeIconFill from "../../assets/close-circle-outline-fill.svg";
 
@@ -41,7 +38,6 @@ export default function Account({
   const [modalActive7, setModalActive7] = useState<boolean>(true);
 
   const user = useAppSelector((store) => store.user);
-
 
   //! Загрушка для тестирования
 
@@ -163,10 +159,12 @@ export default function Account({
           <Modal active={modalActive4} setActive={setModalActive4}>
             <PhoneChahgeForm user={user} setActive={setModalActive4} />
           </Modal>
-          <Button onClick={() => setModalActive6((prev) => !prev)}>
+          <Button onClick={() => setModalActive6((prev) => !prev)} color="blue">
             Изменить пароль
           </Button>
-          <Button onClick={() => void logOutHandler()}>Выйти</Button>
+          <Button onClick={() => void logOutHandler()} color="blue">
+            Выйти
+          </Button>
           <Modal active={modalActive6} setActive={setModalActive6}>
             <PasswordChangeForm user={user} setActive={setModalActive6} />
           </Modal>
