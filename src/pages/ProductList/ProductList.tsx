@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import { setProducts } from "../../store/slices/productsSlice";
-import { addItemToCart } from "../../store/slices/cartSlice";
-import FilterSidebar from "../FilterSidebar/FilterSidebar";
-import styles from "./ProductList.module.scss";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { setProducts } from '../../store/slices/productsSlice';
+import { addItemToCart } from '../../store/slices/cartSlice';
+import FilterSidebar from '../FilterSidebar/FilterSidebar';
+import ProductCard from '../../components/ProductCard/ProductCard';
+import styles from './ProductList.module.scss';
 
 const ProductList: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const products = useSelector((state: RootState) => state.products.filteredItems);
 
   useEffect(() => {
@@ -43,6 +42,7 @@ const ProductList: React.FC = () => {
         id: product.id,
         name: product.name,
         price: product.price,
+        category: product.category,
       })
     );
   };
@@ -52,22 +52,11 @@ const ProductList: React.FC = () => {
       <FilterSidebar />
       <div className={styles.productList}>
         {products.map((product) => (
-          <div key={product.id} className={styles.productCard} onClick={() => navigate(`/thing/${product.id}`)}>
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className={styles.productImage}
-            />
-            <h3 className={styles.productName}>{product.name}</h3>
-            <p className={styles.productPrice}>${product.price}</p>
-            <button
-              className={styles.addToCartButton}
-              onClick={() => handleAddToCart(product)}
-              disabled={!product.inStock}
-            >
-              В корзину
-            </button>
-          </div>
+          <ProductCard 
+            key={product.id} 
+            product={product} 
+            onAddToCart={handleAddToCart} 
+          />
         ))}
       </div>
     </div>

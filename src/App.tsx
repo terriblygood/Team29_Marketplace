@@ -4,6 +4,8 @@ import Header from "./components/Header/Header";
 import ProductList from "./pages/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
 import Profile from "./pages/Profile/Profile";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import styles from "./App.module.scss";
 import { useAppDispatch } from "./store/hooks";
 import { fetchAuth } from "./store/userThunkActions";
@@ -26,16 +28,19 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className={styles.app}>
-        <Header />
-        <Routes>
-          <Route path="/" element={<ProductList />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/thing/:id" element={<ThingPage />} />
-          <Route path="/admin" element={<Admin />} />
-        </Routes>
-      </div>
+      <ErrorBoundary>
+        <div className={styles.app}>
+          <Header />
+          <Routes>
+            <Route path="/" element={<ProductList />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<ErrorPage />} />
+            <Route path="/thing/:id" element={<ThingPage />} />
+            <Route path="/admin" element={<Admin />} />
+          </Routes>
+        </div>
+      </ErrorBoundary>
     </Router>
   );
 };

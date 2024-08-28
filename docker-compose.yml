@@ -1,0 +1,8 @@
+services:
+  frontend:
+    container_name: 29_frontend_t1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '1337:80'
