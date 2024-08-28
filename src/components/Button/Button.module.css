@@ -54,6 +54,11 @@
     background-color: var(--dark-beige); color: var(--font-white);
 }
 
+.btn.blue {
+    background-color: var(--T1_blue);
+    color: var(--font-white);
+}
+
 .btn.gray {
     color: var(--color-btn-font-gray);
     background-color: var(--color-btn-gray);

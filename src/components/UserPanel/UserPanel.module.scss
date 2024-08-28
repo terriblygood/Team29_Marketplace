@@ -1,0 +1,7 @@
+.panel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-left: 4rem;
+    margin-right: 4rem;
+}

@@ -1,5 +1,5 @@
 export type UserDataType = {
-  id?: string;
+  id: string;
   name: string;
   email: string;
   phoneNumber: string;
@@ -7,7 +7,7 @@ export type UserDataType = {
 };
 
 export type UserType = {
-  id?: string;
+  id: string;
   name: string;
   email: string;
   password: string;
@@ -24,10 +24,22 @@ export type ColorTypes =
   | "info"
   | "user"
   | "none"
+  | "blue"
   | undefined;
 
 export type ThingType = {
   id: string;
+  name: string;
+  description: string;
+  color: string;
+  size: string;
+  count: number;
+  price: number;
+  category: string;
+  brand: string;
+};
+
+export type ShortThingType = {
   name: string;
   description: string;
   color: string;

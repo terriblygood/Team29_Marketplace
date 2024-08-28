@@ -7,6 +7,8 @@ import Profile from "./pages/Profile/Profile";
 import styles from "./App.module.scss";
 import { useAppDispatch } from "./store/hooks";
 import { fetchAuth } from "./store/userThunkActions";
+import ThingPage from "./pages/ThingPage/ThingPage";
+import Admin from "./pages/Admin/Admin";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +32,8 @@ const App: React.FC = () => {
           <Route path="/" element={<ProductList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/thing/:id" element={<ThingPage />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </div>
     </Router>

@@ -16,6 +16,7 @@ import closeEyeIcon from "../../assets/eye-off-outline.svg";
 
 export default function Auth(): JSX.Element {
   const initialState = {
+    id: "",
     email: "",
     password: "",
     name: "",
@@ -39,7 +40,6 @@ export default function Auth(): JSX.Element {
   };
 
   const addUserHandler = async (): Promise<void> => {
-
     //! Нужно починить после того, как заработает эндпоинт для проверки почты
 
     // const checkMail = await axios.get(
@@ -47,9 +47,6 @@ export default function Auth(): JSX.Element {
     // );
 
     // console.log(checkMail.data, 'Я результат checkmail');
-    ;
-    
-
     // const checkPass = await axios.post(
     //   ``,
     //   {
@@ -91,18 +88,16 @@ export default function Auth(): JSX.Element {
         );
       } else if (!inputs.password && isLogin) {
         notifyWarning("Пожалуйста, введите пароль.");
-      // } else if (!isLogin && checkMail.data) {
+        // } else if (!isLogin && checkMail.data) {
         notifyWarning("Пользователь с такой почтой уже существует.");
-      // } else if (isLogin && !checkMail.data) {
+        // } else if (isLogin && !checkMail.data) {
         notifyWarning("Пользователя с такой почтой не существует.");
-      // } else if (isLogin && checkMail.data && !checkPass.data) {
+        // } else if (isLogin && checkMail.data && !checkPass.data) {
         notifyWarning("Неверный пароль.");
       } else {
         if (!isLogin) {
           //! тут происходит регистрация
-        await dispatch(
-          fetchAuth({ data: inputs })
-        );
+          await dispatch(fetchAuth({ data: inputs }));
         } else {
           //! тут нужно будет дописать логин
           // await dispatch(

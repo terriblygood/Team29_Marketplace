@@ -36,25 +36,40 @@ import Button from "../../components/Button/Button";
 
 export default function ThingPage(): JSX.Element {
   const initialThing = {
-  id: '',
-  name: '',
-  description: '',
-  color: '',
-  size: '',
-  count: 0,
-  price: 0,
-  category: '',
-  brand: '',
+    id: "1",
+    name: "Худи",
+    description:
+      "Свитер или свитшот из мягкого хлопчатобумажного трикотажа или флиса с капюшоном, а также боковыми скрытыми карманами. Также худи сходно с анораком — лёгкой курткой с капюшоном, тоже надеваемой через голову; как и анорак, может иметь большие накладные карманы- «кенгурятники» спереди и шнуровку-утяжку на капюшоне.",
+    color: "Красный",
+    size: "XL",
+    count: 5,
+    price: 2999,
+    category: "Одежда",
+    brand: "Т1",
   };
 
+  const photos = [
+    "https://cs11.livemaster.ru/storage/topic/NxN/dd/09/006b5d7549a09593848407108dd007a761b59h.jpg?h=bMOxW3ehKy7BwHkCdAfizQ",
+    "https://avatars.mds.yandex.net/i?id=4075d77f357980cdd6ba7df20b0af09d_l-12626686-images-thumbs&n=13",
+    "https://avatars.mds.yandex.net/i?id=7426e9da9d5da6df81f5c0dee6d38eec_l-5241638-images-thumbs&n=13",
+  ];
+
   const [thing, setThing] = useState<ThingType>(initialThing);
-  const [modalActive1, setModalActive1] = useState<boolean>(true);
-  const [modalActive2, setModalActive2] = useState<boolean>(true);
-  const [initiate, setInitiate] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
   const params = useParams();
+
+  const getUser = async (): Promise<void> => {
+    try {
+      axios
+        .get(`https://29-t1api.gortem.ru/products/${params.id}`)
+        .then((res) => setThing(res.data))
+        .catch((err) => console.log("Ошибка получения информации о вещи", err));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  getUser();
 
   return (
     <WholePage>
@@ -63,15 +78,6 @@ export default function ThingPage(): JSX.Element {
           <Button link onClick={() => navigate(-1)}>
             <span style={{ fontSize: "1.2rem" }}>{"<"} Назад</span>
           </Button>
-
-          <h1>{thing.name}</h1>
-
-          {thing.issue && <h2 style={{ color: "red" }}>{thing.issue}</h2>}
-          {!thing.isApproved && !thing.issue?.length && (
-            <h2 style={{ color: "orange" }}>Вещь пока на модерации</h2>
-          )}
-
-          <div className={style.category}>{thing.category}</div>
         </div>
         <div className={style.mainWrapper}>
           <SideBar>
@@ -79,15 +85,27 @@ export default function ThingPage(): JSX.Element {
               <CarouselProvider
                 naturalSlideWidth={100}
                 naturalSlideHeight={100}
-                totalSlides={thing.Photos.length}
+                // totalSlides={thing.Photos.length}
+                totalSlides={3}
               >
-                <Slider>
+                {/* <Slider>
                   {thing.Photos.map((photo, index) => (
                     <Slide key={`img-${photo.id}`} index={index}>
+                    <ImageWithZoom
+                    className={`${style.photo}`}
+                    src={`${import.meta.env.VITE_THINGS}/${photo.photoUrl}`}
+                    alt="Вещь"
+                    />
+                    </Slide>
+                    ))}
+                    </Slider> */}
+                <Slider>
+                  {photos.map((photo, index) => (
+                    <Slide key={`img-${photo}`} index={index}>
                       <ImageWithZoom
                         className={`${style.photo}`}
-                        src={`${import.meta.env.VITE_THINGS}/${photo.photoUrl}`}
-                        alt="Штанi"
+                        src={photo}
+                        alt="Вещь"
                       />
                     </Slide>
                   ))}
@@ -98,82 +116,15 @@ export default function ThingPage(): JSX.Element {
             </div>
           </SideBar>
           <MainContent>
-            <div className={style.marginTop}>
-              {/* <div className={style.topNaming}>
-              
-            </div> */}
-            </div>
+            <h1>{thing.name}</h1>
 
-            <div className={style.oneLine}>
-              {/* Осталось {getRemainigTime(thing.endDate)} */}
-
-              {/* <ChipInline color="good">
-                осталось {getRemainigTime(thing.endDate)}
-              </ChipInline> */}
-              <div className={style.ownerName}>
-                <img
-                  className={style.icon}
-                  src="/assets/icons/ava-empty-olive.svg"
-                  alt="svg"
-                />
-                {thing.User.lastName
-                  ? `${thing.User.firstName} ${thing.User.lastName}`
-                  : `${thing.User.firstName}`}
-              </div>
-            </div>
+            <div className={style.category}>{thing.category}</div>
+            <div className={style.oneLine}></div>
 
             <div className={style.address}>{thing.description}</div>
             <br />
-            <div className={style.address}>{thing.thingAddress}</div>
-
-            <div className={`${style.buttonDiv}`}>
-              {user.id !== thing.userId && !initiate && (
-                <Button
-                  // className={`${style.button}`}
-                  onClick={() => setModalActive1((prev) => !prev)}
-                >
-                  Давай меняться
-                </Button>
-              )}
-              {user.id !== thing.userId && initiate && (
-                <Chip>Вы уже предложили обмен</Chip>
-              )}
-              {user.id !== 0 && user.id === thing.userId ? (
-                <Button onClick={() => setModalActive2((prev) => !prev)}>
-                  Изменить
-                </Button>
-              ) : (
-                <> </>
-              )}
-            </div>
-            {user.id !== thing.userId && thing.id ? (
-              <OtherThings thing={thing} />
-            ) : (
-              <div />
-            )}
-            <Modal active={modalActive1} setActive={setModalActive1}>
-              <InitChange thingId={thing.id} setActive={setModalActive1} />
-            </Modal>
-            <Modal active={modalActive2} setActive={setModalActive2}>
-              <ThingUpdateForm
-                thing={thing}
-                setThing={setThing}
-                setActive={setModalActive2}
-              />
-              {/* <ThingUpdateForm thingId={thing.id}  initialThing={initialThing} />  */}
-            </Modal>
           </MainContent>
         </div>
-        {/* <div className={`${style.post}`}>
-        <div className={`${style.mainContent}`}>
-          <div className={`${style.addContent}`}>
-            <div className={`${style.description}`}>{thing.description}</div>
-            
-            
-          </div>
-        </div>
-
-      </div> */}
       </div>
     </WholePage>
   );

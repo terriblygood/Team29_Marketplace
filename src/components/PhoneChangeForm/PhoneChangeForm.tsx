@@ -58,7 +58,7 @@ export default function PhoneChahgeForm({
           onChange={changeHandler}
           value={input.phone}
         />
-        <Button onClick={() => void changePhone()}>Сохранить телефон</Button>
+        <Button onClick={() => void changePhone()} color='blue'>Сохранить телефон</Button>
       </div>
     </div>
   );
