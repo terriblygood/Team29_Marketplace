@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import axios from "axios";
 import { UserDataType } from "../../types";
 import UserCard from "../../components/UserCard/UserCard";
