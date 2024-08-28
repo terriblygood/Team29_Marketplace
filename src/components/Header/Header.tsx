@@ -19,10 +19,10 @@ const Header: React.FC = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    dispatch(filterProducts(value)); 
+    dispatch(filterProducts(value));
   };
   const handleLogoClick = () => {
-    navigate('/');
+    navigate("/");
     window.location.reload(); // Обновление страницы при клике на логотип(вообще больше для того чтобы сбросить все фильтры)
     //но лучше бы добавить кноч]пку сброса фильтров, так странице не нужно будет перерисовываться
   };
@@ -42,7 +42,7 @@ const Header: React.FC = () => {
         className={styles.searchInput}
       />
       <div className={styles.icons}>
-        <button onClick={() => setlk((prev) => !prev)}>ЛК</button>
+        <Button color="blue" onClick={() => setlk((prev) => !prev)}>ЛК</Button>
         <img
           src={profileIcon}
           alt="Profile"

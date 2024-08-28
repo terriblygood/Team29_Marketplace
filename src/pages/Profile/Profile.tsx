@@ -162,7 +162,7 @@ export default function Auth(): JSX.Element {
           )}
         </div>
         <div className={styles.btns}>
-          <Button onClick={() => void addUserHandler()}>
+          <Button color="blue" onClick={() => void addUserHandler()}>
             {isLogin ? "Авторизоваться" : "Зарегистрироваться"}
           </Button>
           <Button link onClick={() => void authHandler()}>
