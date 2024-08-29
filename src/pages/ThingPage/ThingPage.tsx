@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import {
   CarouselProvider,
@@ -8,35 +8,22 @@ import {
   ButtonNext,
   ImageWithZoom,
 } from "pure-react-carousel";
-// import { GeolocationControl, Map, Placemark } from "@pbe/react-yandex-maps";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import axios from "axios";
 import style from "./ThingPage.module.css";
-import type { ThingType } from "../../types";
-import Modal from "../../components/Modal/Modal";
-// import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-// import InitChange from "../../components/ChangeHandlers/InitChange/InitChange";
-// import { fetchGetNot } from "../../redux/user/userThunkActions";
-// import ThingUpdateForm from "../../components/ChangeHandlers/ThingUpdateForm/ThingUpdateForm";
+import type { ShortThingType, ThingType } from "../../types";
 import SideBar from "../../components/SideBar/SideBar";
 import WholePage from "../../components/WholePage/WholePage";
 import MainContent from "../../components/MainContent/MainContent";
 import Button from "../../components/Button/Button";
-// import OtherThings from "../../components/OtherThings/OtherThings";
-// import getRemainigTime from "../../service/getRemainigTime";
-// import Chip from "../../components/Shared/Chip/Chip";
-// import Spinner from "../../components/Widgets/Spinner/Spinner";
-// import ChipInline from "../../components/Shared/ChipInline/ChipInline";
-
-// type ByMeDealsType = {
-//   id: number;
-//   thingId: number;
-//   status: number;
-// };
+import { notifySuccess, notifyWarning } from "../../toasters";
+import Modal from "../../components/Modal/Modal";
+import UpdateThingForm from "../../components/UpdateThingForm/UpdateThingForm";
 
 export default function ThingPage(): JSX.Element {
+  const [modalActive, setModalActive] = useState<boolean>(true);
   const initialThing = {
-    id: "1",
+    // id: "1",
     name: "Худи",
     description:
       "Свитер или свитшот из мягкого хлопчатобумажного трикотажа или флиса с капюшоном, а также боковыми скрытыми карманами. Также худи сходно с анораком — лёгкой курткой с капюшоном, тоже надеваемой через голову; как и анорак, может иметь большие накладные карманы- «кенгурятники» спереди и шнуровку-утяжку на капюшоне.",
@@ -54,12 +41,12 @@ export default function ThingPage(): JSX.Element {
     "https://avatars.mds.yandex.net/i?id=7426e9da9d5da6df81f5c0dee6d38eec_l-5241638-images-thumbs&n=13",
   ];
 
-  const [thing, setThing] = useState<ThingType>(initialThing);
+  const [thing, setThing] = useState<ShortThingType>(initialThing);
 
   const navigate = useNavigate();
   const params = useParams();
 
-  const getUser = async (): Promise<void> => {
+  const getThing = async (): Promise<void> => {
     try {
       axios
         .get(`https://29-t1api.gortem.ru/products/${params.id}`)
@@ -69,15 +56,46 @@ export default function ThingPage(): JSX.Element {
       console.log(error);
     }
   };
-  getUser();
+
+  const deleteThing = async (): Promise<void> => {
+    {
+      try {
+        const del = await axios.delete(
+          `https://29-t1api.gortem.ru/products/${params.id}`
+        );
+        navigate("/");
+        notifySuccess("Вещь успешно добавлена.");
+      } catch (error) {
+        console.log(error);
+        notifyWarning("Пожалуйста, заполните все поля.");
+      }
+    }
+  };
+
+  useLayoutEffect(() => {
+    getThing();
+  }, []);
 
   return (
     <WholePage>
       <div className={style.mainContent}>
         <div className={style.topNaming}>
-          <Button link onClick={() => navigate(-1)}>
+          <Button color="blue" onClick={() => navigate(-1)}>
             <span style={{ fontSize: "1.2rem" }}>{"<"} Назад</span>
           </Button>
+          <Button color="danger" onClick={deleteThing}>
+            Удалить товар
+          </Button>
+          <Button color="blue" onClick={() => setModalActive((prev) => !prev)}>
+            Обновить товар
+          </Button>
+          <Modal active={modalActive} setActive={setModalActive}>
+            <UpdateThingForm
+              setActive={setModalActive}
+              initialThing={initialThing}
+              id={params.id ?? ""}
+            />
+          </Modal>
         </div>
         <div className={style.mainWrapper}>
           <SideBar>

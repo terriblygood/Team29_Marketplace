@@ -5,6 +5,7 @@ import UserCard from "../../components/UserCard/UserCard";
 import UserPanel from "../../components/UserPanel/UserPanel";
 import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
+import AddThingForm from "../../components/AddThingForm/AddThingForm";
 
 export default function Admin() {
   const [modalActive, setModalActive] = useState<boolean>(true);
@@ -18,7 +19,7 @@ export default function Admin() {
         Добавить товар
       </Button>
       <Modal active={modalActive} setActive={setModalActive}>
-        <p>Доабвление товара</p>
+        <AddThingForm setActive={setModalActive} />
       </Modal>
       <h1>Заказы</h1>
     </>
