@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { setProducts } from "../../store/slices/productsSlice";
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 // Маппинг русских категорий на английские
 const categoryMap: { [key: string]: string } = {
   "МЕРЧ": "MERCH",
-  "АНТИКВАРИАТ": "ANTIQUES",
+  "КАНЦЕЛЯРИЯ": "CHANCELLERY",
   "СМАРТФОНЫ": "SMARTPHONES",
   "НОУТБУКИ": "LAPTOPS",
   "ГАДЖЕТЫ": "GADGETS",
@@ -28,6 +28,8 @@ const ProductList: React.FC = () => {
   const products = useSelector((state: RootState) => state.products.filteredItems);
   const allProducts = useSelector((state: RootState) => state.products.items);
   const cartItems = useSelector((state: RootState) => state.cart.items);
+
+  const [uniqueCategories, setUniqueCategories] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -47,6 +49,10 @@ const ProductList: React.FC = () => {
           imageUrl: "", 
         }));
         dispatch(setProducts(formattedData));
+
+        // Создаем массив уникальных категорий
+        const categories: string[] = Array.from(new Set(data.map((item: any) => item.category.toUpperCase())));
+        setUniqueCategories(categories);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -96,7 +102,7 @@ const ProductList: React.FC = () => {
       try {
         const payload = {
           consumerId: userId,
-          productType: productType,
+          productType: productType, // Используем преобразованную категорию
           productId: product.id,
           count: 1,
         };
@@ -133,7 +139,9 @@ const ProductList: React.FC = () => {
 
   return (
     <div className={styles.productPage}>
-      <FilterSidebar />
+      <FilterSidebar categories={uniqueCategories} onResetFilters={() => {
+        // Дополнительная логика для сброса фильтров
+      }} />
       <div className={styles.productList}>
         {allProducts.length === 0 ? (
           <p className={styles.noProducts}>Пока тут пусто, но мы скоро все добавим!</p>

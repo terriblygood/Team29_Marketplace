@@ -21,6 +21,10 @@ const Header: React.FC = () => {
     setSearchTerm(value);
     dispatch(filterProducts(value));
   };
+  const handleResetSearcher = () => {
+    setSearchTerm('');
+  }
+  
   const handleLogoClick = () => {
     navigate("/");
     window.location.reload(); // Обновление страницы при клике на логотип(вообще больше для того чтобы сбросить все фильтры)
