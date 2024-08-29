@@ -4,6 +4,7 @@ import { ShortThingType, ThingType } from "../../types";
 import axios from "axios";
 import Button from "../Button/Button";
 import { notifySuccess, notifyWarning } from "../../toasters";
+import style from "./UpdateThingForm.module.scss";
 
 export default function AddThingForm({
   setActive,
@@ -64,16 +65,10 @@ export default function AddThingForm({
       input.brand
     ) {
       try {
-        console.log(id, "Мама, я айди");
-        console.log("Мама, я в запросе");
-        console.log(input, "Мама, я инпут");
-
         const upd = await axios.post(
           `https://29-t1api.gortem.ru/products/${id}`,
           input
         );
-        console.log("Мама, запрос улетел");
-
         notifySuccess("Вещь успешно обновлена.");
         setActive((prev) => !prev);
       } catch (error) {
@@ -85,8 +80,8 @@ export default function AddThingForm({
   };
 
   return (
-    <div>
-      <label htmlFor="">
+    <div className={style.form}>
+      <label htmlFor="name">
         Название товара
         <Input
           type="text"
@@ -96,7 +91,7 @@ export default function AddThingForm({
           placeholder="Укажите название"
         ></Input>
       </label>
-      <label htmlFor="">
+      <label htmlFor="description">
         Описание товара
         <Input
           type="text"
@@ -106,7 +101,7 @@ export default function AddThingForm({
           placeholder="Введите описание"
         ></Input>
       </label>
-      <label htmlFor="">
+      <label htmlFor="color">
         Цвет товара
         <Input
           type="text"
@@ -116,7 +111,7 @@ export default function AddThingForm({
           placeholder="Укажите цвет"
         ></Input>
       </label>
-      <label htmlFor="">
+      <label htmlFor="size" className={style.specialLabel}>
         Размер товара
         <select
           // type="text"
@@ -137,7 +132,7 @@ export default function AddThingForm({
           <option value="XXXXL">XXXXL</option>
         </select>
       </label>
-      <label htmlFor="">
+      <label htmlFor="count">
         Количество товара
         <Input
           type="number"
@@ -147,7 +142,7 @@ export default function AddThingForm({
           // placeholder="Количество товара"
         ></Input>
       </label>
-      <label htmlFor="">
+      <label htmlFor="price">
         Цена товара
         <Input
           type="number"
@@ -157,7 +152,7 @@ export default function AddThingForm({
           // placeholder="Цена товара"
         ></Input>
       </label>
-      <label htmlFor="">
+      <label htmlFor="category">
         Категория товара
         <Input
           type="string"
@@ -167,7 +162,7 @@ export default function AddThingForm({
           placeholder="Укажите категорию"
         ></Input>
       </label>
-      <label htmlFor="">
+      <label htmlFor="brand">
         Брeнд
         <Input
           type="string"

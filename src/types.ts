@@ -25,6 +25,7 @@ export type ColorTypes =
   | "user"
   | "none"
   | "blue"
+  | "green"
   | undefined;
 
 export type ThingType = {

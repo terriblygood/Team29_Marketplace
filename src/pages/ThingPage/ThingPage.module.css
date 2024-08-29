@@ -40,9 +40,9 @@
 }
 
 .oneLine {
-display: flex;
-gap: 4rem;
-align-items: center;
+  display: flex;
+  gap: 4rem;
+  align-items: center;
 }
 
 .ownerName {
@@ -52,9 +52,9 @@ align-items: center;
 }
 
 
-.icon{
-	width: 1.5rem;
-	height: auto;
+.icon {
+  width: 1.5rem;
+  height: auto;
 }
 
 .topNaming {
@@ -67,7 +67,7 @@ align-items: center;
   padding-right: 5rem;
 }
 
-.marginTop{
+.marginTop {
   margin-top: 3rem;
 }
 
