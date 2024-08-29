@@ -9,7 +9,22 @@ import {
 } from "../../store/slices/cartSlice";
 import styles from "./Cart.module.scss";
 import Modal from "../../components/Modal/Modal";
-import axios from "axios";
+import axios, { Axios, AxiosError } from "axios";
+
+// Маппинг русских категорий на английские
+const categoryMap: { [key: string]: string } = {
+  "МЕРЧ": "MERCH",
+  "Антиквариат": "ANTIQUES",
+  "Смартфоны": "SMARTPHONES",
+  "Ноутбуки": "LAPTOPS",
+  "Гаджеты": "GADGETS",
+  "Телевизоры": "TVS",
+  "Аудиотехника": "AUDIO",
+  "Игровые консоли": "GAME_CONSOLES",
+  "Компьютерные комплектующие": "COMPUTER_PARTS",
+  "Фотоаппараты": "CAMERAS",
+  "Умные часы": "SMARTWATCHES"
+};
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,7 +33,7 @@ const Cart: React.FC = () => {
     (total, item) => total + item.price * item.quantity,
     0
   );
-  const [modalActive, setModalActive] = useState<boolean>(false);
+  const [modalActive, setModalActive] = useState<boolean>(true);
   const [step, setStep] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<"ONLINE" | "ON_DELIVERY" | "">("");
   const [address, setAddress] = useState<string>("");
@@ -34,28 +49,62 @@ const Cart: React.FC = () => {
   };
 
   const handleOrderSubmit = async () => {
-    const consumerId = "6829157f-3d5e-426d-959a-c6075918c91f";
-
+    // Извлекаем userId из localStorage
+    const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
+  
+    // Проверка userId: должен быть валидным UUID
+    console.log("Проверка userId:", userId);
+    if (!userId || typeof userId !== 'string' || !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(userId)) {
+      console.error("Некорректный userId:", userId);
+      return;
+    }
+  
     try {
-      const promises = cartItems.map((item) =>
-        axios.post("/carts/", {
-          consumerId,
-          productType: item.category.toUpperCase(),
+      const promises = cartItems.map((item) => {
+        // Проверка productId: должен быть валидным UUID
+        console.log("Проверка productId:", item.id);
+        if (!item.id || typeof item.id !== 'string' || !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(item.id)) {
+          console.error("Некорректный productId:", item.id);
+          throw new Error(`Некорректный productId: ${item.id}`);
+        }
+  
+        const productType = categoryMap[item.category.toUpperCase()] || item.category;
+  
+        const payload = {
+          consumerId: userId,
+          productType: productType,
           productId: item.id,
           count: item.quantity,
-        })
-      );
-
+        };
+  
+        console.log("Отправляемый запрос:", payload);
+  
+        return axios.post("https://29-t1api.gortem.ru/carts/", payload);
+      });
+  
       await Promise.all(promises);
-      console.log("Заказ успешно оформлен");
-
-      
+  
+      // Удаление корзины после создания заказа
+      const deletePromises = cartItems.map((item) =>
+        axios.delete(`https://29-t1api.gortem.ru/carts/${item.cartItemId}`)
+      );
+      await Promise.all(deletePromises);
+  
       dispatch(clearCart());
-
-      // (заказ оформлен)
-      setStep(3);
-    } catch (error) {
-      console.error("Ошибка при оформлении заказа:", error);
+  
+      console.log("Заказ успешно оформлен");
+  
+      setStep(3); // Переход на финальный шаг
+    } catch (err) {
+      const error = err as AxiosError;
+  
+      if (error.response) {
+        console.error("Ошибка ответа сервера:", error.response.data);
+      } else if (error.request) {
+        console.error("Запрос не был выполнен:", error.request);
+      } else {
+        console.error("Произошла ошибка:", error.message);
+      }
     }
   };
 
@@ -98,7 +147,7 @@ const Cart: React.FC = () => {
         <button
           className={styles.checkoutButton}
           disabled={cartItems.length === 0}
-          onClick={() => setModalActive(true)}
+          onClick={() => setModalActive(false)}
         >
           ОФОРМИТЬ
         </button>
