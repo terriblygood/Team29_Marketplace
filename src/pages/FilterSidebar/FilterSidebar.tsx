@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { filterByCategory, filterByPrice, filterByAvailability } from "../../store/slices/productsSlice";
+import { filterByCategory, filterByPrice, filterByAvailability, resetFilters } from "../../store/slices/productsSlice";
 import styles from "./FilterSidebar.module.scss";
 
-const categories = [
-  "Мерч", "Антиквариат", "Смартфоны", "Ноутбуки", "Гаджеты", 
-  "Телевизоры", "Аудиотехника", "Игровые консоли", "Компьютерные комплектующие", "Фотоаппараты", "Умные часы"
-];
+interface FilterSidebarProps {
+  categories: string[];
+  onResetFilters: () => void;
+}
 
-const FilterSidebar: React.FC = () => {
+const FilterSidebar: React.FC<FilterSidebarProps> = ({ categories, onResetFilters }) => {
   const dispatch = useDispatch();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 99999]);
   const [inStockOnly, setInStockOnly] = useState(false);
+
+  // Удаление дубликатов из массива категорий
+  const uniqueCategories = Array.from(new Set(categories));
 
   const handleCategoryChange = (category: string) => {
     const updatedCategories = selectedCategories.includes(category)
@@ -38,13 +41,21 @@ const FilterSidebar: React.FC = () => {
     dispatch(filterByAvailability(!inStockOnly));
   };
 
+  const handleResetFilters = () => {
+    setSelectedCategories([]);
+    setPriceRange([0, 99999]);
+    setInStockOnly(false);
+    dispatch(resetFilters());
+    onResetFilters();
+  };
+
   return (
     <aside className={styles.filterSidebar}>
       <h3>Фильтры</h3>
       <div className={styles.filterSection}>
         <h4>Категории</h4>
         <ul>
-          {categories.map(category => (
+          {uniqueCategories.map(category => (
             <li key={category}>
               <label>
                 <input 
@@ -88,6 +99,9 @@ const FilterSidebar: React.FC = () => {
           В наличии
         </label>
       </div>
+      <button onClick={handleResetFilters} className={styles.resetButton}>
+        Очистить фильтры
+      </button>
     </aside>
   );
 };

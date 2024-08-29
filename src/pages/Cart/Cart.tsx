@@ -9,34 +9,28 @@ import {
 } from "../../store/slices/cartSlice";
 import styles from "./Cart.module.scss";
 import Modal from "../../components/Modal/Modal";
-import axios, { Axios, AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
-// Маппинг русских категорий на английские
+// Маппинг рус ту eng
 const categoryMap: { [key: string]: string } = {
   "МЕРЧ": "MERCH",
-  "Антиквариат": "ANTIQUES",
-  "Смартфоны": "SMARTPHONES",
-  "Ноутбуки": "LAPTOPS",
-  "Гаджеты": "GADGETS",
-  "Телевизоры": "TVS",
-  "Аудиотехника": "AUDIO",
-  "Игровые консоли": "GAME_CONSOLES",
-  "Компьютерные комплектующие": "COMPUTER_PARTS",
-  "Фотоаппараты": "CAMERAS",
-  "Умные часы": "SMARTWATCHES"
+  "КАНЦЕЛЯРИЯ": "CHANCELLERY",
+  // новые надо согласовать
 };
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
   const [modalActive, setModalActive] = useState<boolean>(true);
   const [step, setStep] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<"ONLINE" | "ON_DELIVERY" | "">("");
   const [address, setAddress] = useState<string>("");
+  const [finalTotalPrice, setFinalTotalPrice] = useState<number>(0); // Состояние для сохранения итоговой суммы
+  
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   const handleClearCart = () => {
     if (cartItems.length > 0) {
@@ -45,59 +39,56 @@ const Cart: React.FC = () => {
   };
 
   const handleNextStep = () => {
+    setFinalTotalPrice(totalPrice);
     setStep((prevStep) => prevStep + 1);
   };
 
   const handleOrderSubmit = async () => {
-    // Извлекаем userId из localStorage
     const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
-  
-    // Проверка userId: должен быть валидным UUID
+
     console.log("Проверка userId:", userId);
     if (!userId || typeof userId !== 'string' || !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(userId)) {
       console.error("Некорректный userId:", userId);
       return;
     }
-  
+
     try {
       const promises = cartItems.map((item) => {
-        // Проверка productId: должен быть валидным UUID
         console.log("Проверка productId:", item.id);
         if (!item.id || typeof item.id !== 'string' || !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(item.id)) {
           console.error("Некорректный productId:", item.id);
           throw new Error(`Некорректный productId: ${item.id}`);
         }
-  
+
         const productType = categoryMap[item.category.toUpperCase()] || item.category;
-  
+
         const payload = {
           consumerId: userId,
           productType: productType,
           productId: item.id,
           count: item.quantity,
         };
-  
+
         console.log("Отправляемый запрос:", payload);
-  
+
         return axios.post("https://29-t1api.gortem.ru/carts/", payload);
       });
-  
+
       await Promise.all(promises);
-  
-      // Удаление корзины после создания заказа
+
       const deletePromises = cartItems.map((item) =>
         axios.delete(`https://29-t1api.gortem.ru/carts/${item.cartItemId}`)
       );
       await Promise.all(deletePromises);
-  
+
       dispatch(clearCart());
-  
+
       console.log("Заказ успешно оформлен");
-  
-      setStep(3); // Переход на финальный шаг
+
+      setStep(3);
     } catch (err) {
       const error = err as AxiosError;
-  
+
       if (error.response) {
         console.error("Ошибка ответа сервера:", error.response.data);
       } else if (error.request) {
@@ -177,7 +168,8 @@ const Cart: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <div>Общая сумма: {totalPrice}$</div>
+              <div>Общая сумма: {totalPrice}$ </div>
+              
               <button onClick={handleNextStep}>Далее</button>
             </div>
           )}
@@ -219,7 +211,7 @@ const Cart: React.FC = () => {
           {step === 3 && (
             <div>
               <h3>Заказ оформлен!</h3>
-              <p>С вашего счета списано {totalPrice}$</p>
+              <p>С вашего счета списано {finalTotalPrice}$</p> {}
             </div>
           )}
         </>

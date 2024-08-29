@@ -22,9 +22,43 @@ const initialState: ProductsState = {
   items: [],
   filteredItems: [],
   searchTerm: "",
-  selectedCategories: [], 
-  priceRange: [0, 5000],
+  selectedCategories: [],
+  priceRange: [0, 99999],
   inStockOnly: false,
+};
+
+const applyFilters = (state: ProductsState) => {
+  let filtered = state.items;
+
+  // Фильтрация по строке поиска
+  if (state.searchTerm) {
+    filtered = filtered.filter((product) =>
+      product.name.toLowerCase().includes(state.searchTerm)
+    );
+  }
+
+  // Фильтрация по категориям
+  if (state.selectedCategories.length > 0) {
+    filtered = filtered.filter((product) =>
+      state.selectedCategories.includes(product.category)
+    );
+  }
+
+  // Фильтрация по диапазону цен
+  if (state.priceRange) {
+    filtered = filtered.filter(
+      (product) =>
+        product.price >= state.priceRange[0] &&
+        product.price <= state.priceRange[1]
+    );
+  }
+
+  // Фильтрация по наличию на складе
+  if (state.inStockOnly) {
+    filtered = filtered.filter((product) => product.inStock);
+  }
+
+  return filtered;
 };
 
 const productsSlice = createSlice({
@@ -34,9 +68,9 @@ const productsSlice = createSlice({
     setProducts(state, action: PayloadAction<Product[]>) {
       state.items = action.payload.map(product => ({
         ...product,
-        category: product.category.toUpperCase(),
+        category: product.category.toUpperCase(), // Приводим категорию к верхнему регистру
       }));
-      state.filteredItems = applyFilters(state);
+      state.filteredItems = applyFilters(state); // Применяем фильтры сразу после установки продуктов
     },
     filterProducts(state, action: PayloadAction<string>) {
       state.searchTerm = action.payload.toLowerCase();
@@ -56,43 +90,13 @@ const productsSlice = createSlice({
     },
     resetFilters(state) {
       state.selectedCategories = [];
-      state.priceRange = [0, 5000];
+      state.priceRange = [0, 99999];
       state.inStockOnly = false;
       state.searchTerm = "";
       state.filteredItems = state.items;
     },
   },
 });
-
-const applyFilters = (state: ProductsState) => {
-  let filtered = state.items;
-
-  if (state.searchTerm) {
-    filtered = filtered.filter((product) =>
-      product.name.toLowerCase().includes(state.searchTerm)
-    );
-  }
-
-  if (state.selectedCategories.length > 0) {
-    filtered = filtered.filter((product) =>
-      state.selectedCategories.includes(product.category)
-    );
-  }
-
-  if (state.priceRange) {
-    filtered = filtered.filter(
-      (product) =>
-        product.price >= state.priceRange[0] &&
-        product.price <= state.priceRange[1]
-    );
-  }
-
-  if (state.inStockOnly) {
-    filtered = filtered.filter((product) => product.inStock);
-  }
-
-  return filtered;
-};
 
 export const {
   setProducts,
