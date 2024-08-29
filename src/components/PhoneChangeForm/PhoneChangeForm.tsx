@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import type { ChangeEvent } from 'react'
-import type { UserDataType, UserType } from '../../types'
-import style from './PhoneChangeForm.module.css'
+import React, { useState } from "react";
+import type { ChangeEvent } from "react";
+import type { UserDataType, UserType } from "../../types";
+import style from "./PhoneChangeForm.module.css";
 // import { useAppDispatch } from '../../../redux/hooks'
 // import { fetchUpd } from '../../../redux/user/userThunkActions'
-import Input from '../Input/Input'
-import Button from '../Button/Button'
+import Input from "../Input/Input";
+import Button from "../Button/Button";
 
 export default function PhoneChahgeForm({
   user,
@@ -52,13 +52,16 @@ export default function PhoneChahgeForm({
     <div className={style.wrapper}>
       <div className={`${style.form}`}>
         <h3>Телефон</h3>
+        <label htmlFor="phone">Телефон</label>
         <Input
           type="text"
           name="phone"
           onChange={changeHandler}
           value={input.phone}
         />
-        <Button onClick={() => void changePhone()} color='blue'>Сохранить телефон</Button>
+        <Button onClick={() => void changePhone()} color="blue">
+          Сохранить телефон
+        </Button>
       </div>
     </div>
   );

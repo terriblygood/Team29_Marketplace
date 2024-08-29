@@ -14,3 +14,7 @@
 .wrapper input{
   background-color: white;
 }
+
+label {
+  display: none;
+}

@@ -121,15 +121,19 @@ export default function Auth(): JSX.Element {
       <form className={styles.form}>
         <div className={styles.inputs}>
           {!isLogin && (
-            <Input
-              onChange={changeHandler}
-              name="name"
-              type="text"
-              required
-              value={inputs.name}
-              placeholder="Имя"
-            />
+            <>
+              {/* <label htmlFor="name">Имя</label> */}
+              <Input
+                onChange={changeHandler}
+                name="name"
+                type="text"
+                required
+                value={inputs.name}
+                placeholder="Имя"
+              />
+            </>
           )}
+          {/* <label htmlFor="email">Почтовый адрес</label> */}
           <Input
             onChange={changeHandler}
             name="email"
@@ -139,6 +143,7 @@ export default function Auth(): JSX.Element {
             placeholder="Почтовый адрес"
           />
           <div className={styles.pass}>
+            {/* <label htmlFor="password">Пароль</label> */}
             <Input
               onChange={changeHandler}
               name="password"

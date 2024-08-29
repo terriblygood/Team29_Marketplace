@@ -69,6 +69,7 @@ export default function ForgetPassForm({
   return (
     <div className={styles.wrapper}>
       <div>Укажите почтовый адрес, привязанный к профилю</div>
+      <label htmlFor="email">Почтовый адрес</label>
       <Input
         type="email"
         name="email"

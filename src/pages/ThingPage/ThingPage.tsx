@@ -10,7 +10,7 @@ import {
 } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import axios from "axios";
-import style from "./ThingPage.module.css";
+import style from "./ThingPage.module.scss";
 import type { ShortThingType, ThingType } from "../../types";
 import SideBar from "../../components/SideBar/SideBar";
 import WholePage from "../../components/WholePage/WholePage";
@@ -134,10 +134,13 @@ export default function ThingPage(): JSX.Element {
             </div>
           </SideBar>
           <MainContent>
-            <h1>{thing.name}</h1>
+            <h1>{thing.name.charAt(0).toUpperCase() + thing.name.slice(1)}</h1>
 
             <div className={style.category}>{thing.category}</div>
-            <div className={style.oneLine}></div>
+            <div className={style.oneLine}>{thing.size}</div>
+            <div className={style.oneLine}>{thing.color}</div>
+            <div className={style.oneLine}>Остаток:{thing.count} шт.</div>
+            <div className={style.oneLine}>Стоимость:{thing.price} $</div>
 
             <div className={style.address}>{thing.description}</div>
             <br />

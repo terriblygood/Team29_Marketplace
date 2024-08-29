@@ -34,15 +34,19 @@ const Header: React.FC = () => {
       <div className={styles.logo} onClick={handleLogoClick}>
         Веб-Ларёк
       </div>
+      <label htmlFor="search">Поиск товаров</label>
       <input
         type="text"
+        name="search"
         placeholder="Поиск товаров..."
         value={searchTerm}
         onChange={handleSearchChange}
         className={styles.searchInput}
       />
       <div className={styles.icons}>
-        <Button color="blue" onClick={() => setlk((prev) => !prev)}>ЛК</Button>
+        <Button color="blue" onClick={() => setlk((prev) => !prev)}>
+          ЛК
+        </Button>
         <img
           src={profileIcon}
           alt="Profile"

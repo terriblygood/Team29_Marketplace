@@ -90,6 +90,7 @@ export default function PasswordChangeForm({
         <h3>Изменение пароля</h3>
         <span>
           Старый пароль
+          <label htmlFor="oldPassword">Старый пароль</label>
           <Input
             type={showPassword ? "text" : "password"}
             name="oldPassword"
@@ -98,7 +99,8 @@ export default function PasswordChangeForm({
           />
         </span>
         <span>
-          Новый пароль пароль
+          Новый пароль
+          <label htmlFor="newPassword">Новый пароль</label>
           <Input
             type={showPassword ? "text" : "password"}
             name="newPassword"
@@ -108,6 +110,7 @@ export default function PasswordChangeForm({
         </span>
         <span>
           Повторите пароль
+          <label htmlFor="repitePassword">Повторите пароль</label>
           <Input
             type={showPassword ? "text" : "password"}
             name="repitePassword"
@@ -115,12 +118,15 @@ export default function PasswordChangeForm({
             value={input.repitePassword}
           />
         </span>
-        <Button onClick={() => void setShowPassword((prev) => !prev)} color="blue">
+        <Button
+          onClick={() => void setShowPassword((prev) => !prev)}
+          color="blue"
+        >
           Показать пароли
         </Button>
         <Button
           color="blue"
-        // onClick={() => void changePass()}
+          // onClick={() => void changePass()}
         >
           Сохранить новый пароль
         </Button>

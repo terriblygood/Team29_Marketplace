@@ -9,6 +9,10 @@
 	width: fit-content;
 }
 
-.wrapper > input {
+.wrapper>input {
 	background-color: white;
+}
+
+label {
+	display: none;
 }

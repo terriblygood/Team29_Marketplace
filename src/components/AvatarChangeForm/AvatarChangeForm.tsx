@@ -56,17 +56,16 @@ export default function AvatarChangeForm({
   return (
     <div className={styles.wrapper}>
       <h3>Аватар</h3>
-      <form className={styles.form} encType='multipart/form-data'>
+      <form className={styles.form} encType="multipart/form-data">
+        <label htmlFor="avatar">Аватар</label>
         <input
-          type='file'
-          name='avatar'
+          type="file"
+          name="avatar"
           ref={fileInputRef}
-          accept='.jpg, .jpeg, .png'
+          accept=".jpg, .jpeg, .png"
         />
-        <Button onClick={() => void uploadAvatar()}>
-          Использовать файл
-        </Button>
+        <Button onClick={() => void uploadAvatar()}>Использовать файл</Button>
       </form>
     </div>
-  )
+  );
 }

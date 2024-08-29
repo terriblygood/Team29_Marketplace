@@ -21,11 +21,11 @@ export default function InitialsChangeForm({
     firstName: user.name,
   };
 
-    useEffect(() => {
-      setInput({
-        firstName: user.name,
-      });
-    }, [user]);
+  useEffect(() => {
+    setInput({
+      firstName: user.name,
+    });
+  }, [user]);
 
   type ShortUserType = {
     firstName: string;
@@ -71,6 +71,7 @@ export default function InitialsChangeForm({
       <div className={`${style.form}`}>
         <span>
           Имя
+          <label htmlFor="firstName">Имя</label>
           <Input
             type="text"
             name="firstName"

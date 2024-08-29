@@ -66,97 +66,82 @@ export default function AddThingForm({
 
   return (
     <div>
-      <label htmlFor="">
-        Название товара
-        <Input
-          type="text"
-          name="name"
-          onChange={changeHandler}
-          value={input.name}
-          placeholder="Укажите название"
-        ></Input>
-      </label>
-      <label htmlFor="">
-        Описание товара
-        <Input
-          type="text"
-          name="description"
-          onChange={changeHandler}
-          value={input.description}
-          placeholder="Введите описание"
-        ></Input>
-      </label>
-      <label htmlFor="">
-        Цвет товара
-        <Input
-          type="text"
-          name="color"
-          onChange={changeHandler}
-          value={input.color}
-          placeholder="Укажите цвет"
-        ></Input>
-      </label>
-      <label htmlFor="">
-        Размер товара
-        <select
-          // type="text"
-          name="size"
-          onChange={changeHandler}
-          value={input.size}
-        >
-          <option value="">Укажите размер</option>
-          <option value="ONE_SIZE">One Size</option>
-          <option value="XXS">XXS</option>
-          <option value="XS">XS</option>
-          <option value="S">s</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
-          <option value="XXXL">XXXL</option>
-          <option value="XXXXL">XXXXL</option>
-        </select>
-      </label>
-      <label htmlFor="">
-        Количество товара
-        <Input
-          type="number"
-          name="count"
-          onChange={changeHandler}
-          value={input.count.toString()}
-          // placeholder="Количество товара"
-        ></Input>
-      </label>
-      <label htmlFor="">
-        Цена товара
-        <Input
-          type="number"
-          name="price"
-          onChange={changeHandler}
-          value={input.price.toString()}
-          // placeholder="Цена товара"
-        ></Input>
-      </label>
-      <label htmlFor="">
-        Категория товара
-        <Input
-          type="string"
-          name="category"
-          onChange={changeHandler}
-          value={input.category}
-          placeholder="Укажите категорию"
-        ></Input>
-      </label>
-      <label htmlFor="">
-        Брeнд
-        <Input
-          type="string"
-          name="brand"
-          onChange={changeHandler}
-          value={input.brand}
-          placeholder="Укажите бренд"
-        ></Input>
-      </label>
+      <label htmlFor="name">Название товара</label>
+      <Input
+        type="text"
+        name="name"
+        onChange={changeHandler}
+        value={input.name}
+        placeholder="Укажите название"
+      ></Input>
+      <label htmlFor="description">Описание товара</label>
+      <Input
+        type="text"
+        name="description"
+        onChange={changeHandler}
+        value={input.description}
+        placeholder="Введите описание"
+      ></Input>
+      <label htmlFor="color">Цвет товара</label>
+      <Input
+        type="text"
+        name="color"
+        onChange={changeHandler}
+        value={input.color}
+        placeholder="Укажите цвет"
+      ></Input>
+      <label htmlFor="size">Размер товара</label>
+      <select
+        // type="text"
+        name="size"
+        onChange={changeHandler}
+        value={input.size}
+      >
+        <option value="">Укажите размер</option>
+        <option value="ONE_SIZE">One Size</option>
+        <option value="XXS">XXS</option>
+        <option value="XS">XS</option>
+        <option value="S">s</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="XXL">XXL</option>
+        <option value="XXXL">XXXL</option>
+        <option value="XXXXL">XXXXL</option>
+      </select>
+      <label htmlFor="count">Количество товара</label>
+      <Input
+        type="number"
+        name="count"
+        onChange={changeHandler}
+        value={input.count.toString()}
+        // placeholder="Количество товара"
+      ></Input>
+      <label htmlFor="price">Цена товара</label>
+      <Input
+        type="number"
+        name="price"
+        onChange={changeHandler}
+        value={input.price.toString()}
+        // placeholder="Цена товара"
+      ></Input>
+      <label htmlFor="category">Категория товара</label>
+      Категория товара
+      <Input
+        type="string"
+        name="category"
+        onChange={changeHandler}
+        value={input.category}
+        placeholder="Укажите категорию"
+      ></Input>
+      <label htmlFor="brand">Брeнд</label>
+      <Input
+        type="string"
+        name="brand"
+        onChange={changeHandler}
+        value={input.brand}
+        placeholder="Укажите бренд"
+      ></Input>
       <Button
         color="blue"
         onClick={() => {
