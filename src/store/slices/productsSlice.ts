@@ -32,14 +32,14 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     setProducts(state, action: PayloadAction<Product[]>) {
-      state.items = action.payload;
-      state.filteredItems = action.payload;
+      state.items = action.payload.map(product => ({
+        ...product,
+        category: product.category.toUpperCase(),
+      }));
+      state.filteredItems = applyFilters(state);
     },
     filterProducts(state, action: PayloadAction<string>) {
       state.searchTerm = action.payload.toLowerCase();
-      state.filteredItems = state.items.filter((product) =>
-        product.name.toLowerCase().includes(state.searchTerm)
-      );
       state.filteredItems = applyFilters(state);
     },
     filterByCategory(state, action: PayloadAction<string[]>) {
@@ -63,7 +63,6 @@ const productsSlice = createSlice({
     },
   },
 });
-
 
 const applyFilters = (state: ProductsState) => {
   let filtered = state.items;

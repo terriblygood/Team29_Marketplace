@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { filterByCategory, filterByPrice, filterByAvailability, resetFilters } from "../../store/slices/productsSlice";
+import { filterByCategory, filterByPrice, filterByAvailability } from "../../store/slices/productsSlice";
 import styles from "./FilterSidebar.module.scss";
 
 const categories = [
@@ -11,7 +11,7 @@ const categories = [
 const FilterSidebar: React.FC = () => {
   const dispatch = useDispatch();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [inStockOnly, setInStockOnly] = useState(false);
 
   const handleCategoryChange = (category: string) => {
@@ -36,13 +36,6 @@ const FilterSidebar: React.FC = () => {
   const handleAvailabilityChange = () => {
     setInStockOnly(!inStockOnly);
     dispatch(filterByAvailability(!inStockOnly));
-  };
-
-  const handleResetFilters = () => {
-    setSelectedCategories([]);
-    setPriceRange([0, 5000]);
-    setInStockOnly(false);
-    dispatch(resetFilters());
   };
 
   return (
@@ -95,12 +88,6 @@ const FilterSidebar: React.FC = () => {
           В наличии
         </label>
       </div>
-      <button 
-        className={styles.resetButton} 
-        onClick={handleResetFilters}
-      >
-        Сбросить фильтры
-      </button>
     </aside>
   );
 };
