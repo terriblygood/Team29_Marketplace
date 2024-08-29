@@ -1,27 +1,41 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Input from "../Input/Input";
-import { ShortThingType } from "../../types";
+import { ShortThingType, ThingType } from "../../types";
 import axios from "axios";
 import Button from "../Button/Button";
 import { notifySuccess, notifyWarning } from "../../toasters";
 
 export default function AddThingForm({
   setActive,
+  initialThing,
+  id,
 }: {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  initialThing: ShortThingType;
+  id: string;
 }) {
-  const initialThing = {
-    name: "",
-    description: "",
-    color: "",
-    size: "",
-    count: 0,
-    price: 0,
-    category: "",
-    brand: "",
-  };
+  const [input, setInput] = useState<ShortThingType | ThingType>(initialThing);
+  //   const [thing, setThing] = useState<ThingType>(initialThing);
+  console.log(id, "Я айди");
 
-  const [input, setInput] = useState<ShortThingType>(initialThing);
+  useEffect(() => {
+    const getThing = async (): Promise<void> => {
+      try {
+        axios
+          .get(`https://29-t1api.gortem.ru/products/${id}`)
+          .then((res) => {
+            delete res.data.id;
+            setInput(res.data);
+          })
+          .catch((err) =>
+            console.log("Ошибка получения информации о вещи", err)
+          );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getThing();
+  }, []);
 
   useEffect(() => {
     console.log(input);
@@ -34,11 +48,11 @@ export default function AddThingForm({
 
     setInput((prev) => ({
       ...prev,
-      [name]: name === "count" || name === "price" ? Number(value) : value, // Преобразуем count и price в числа
+      [name]: name === "count" || name === "price" ? Number(value) : value,
     }));
   };
 
-  const addThing = async (): Promise<void> => {
+  const updateThing = async (): Promise<void> => {
     if (
       input.name &&
       input.description &&
@@ -50,11 +64,17 @@ export default function AddThingForm({
       input.brand
     ) {
       try {
-        const add = await axios.post(
-          `https://29-t1api.gortem.ru/products/`,
+        console.log(id, "Мама, я айди");
+        console.log("Мама, я в запросе");
+        console.log(input, "Мама, я инпут");
+
+        const upd = await axios.post(
+          `https://29-t1api.gortem.ru/products/${id}`,
           input
         );
-        notifySuccess("Вещь успешно добавлена.");
+        console.log("Мама, запрос улетел");
+
+        notifySuccess("Вещь успешно обновлена.");
         setActive((prev) => !prev);
       } catch (error) {
         console.log(error);
@@ -160,10 +180,10 @@ export default function AddThingForm({
       <Button
         color="blue"
         onClick={() => {
-          addThing();
+          updateThing();
         }}
       >
-        Добавить вещь
+        Обновить вещь
       </Button>
     </div>
   );

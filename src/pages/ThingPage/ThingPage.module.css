@@ -61,7 +61,7 @@ align-items: center;
   gap: .8rem;
   display: flex;
   font-size: 1rem;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   padding-left: 5rem;
   padding-right: 5rem;
