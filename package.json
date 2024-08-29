@@ -5,6 +5,7 @@
   "dependencies": {
     "@admiral-ds/react-ui": "^8.16.0",
     "@reduxjs/toolkit": "^2.2.7",
+    "@szhsin/react-accordion": "^1.2.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

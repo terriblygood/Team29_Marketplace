@@ -39,19 +39,23 @@
 }
 
 .btn.neutral {
-    background-color: var(--olive); color: var(--font-white);
+    background-color: var(--olive);
+    color: var(--font-white);
 }
 
 .btn.danger {
-    background-color: var(--red); color: var(--font-white);
+    background-color: var(--red);
+    color: var(--font-white);
 }
 
 .btn.good {
-    background-color: var(--olive); color: var(--font-white);
+    background-color: var(--olive);
+    color: var(--font-white);
 }
 
 .btn.warning {
-    background-color: var(--dark-beige); color: var(--font-white);
+    background-color: var(--dark-beige);
+    color: var(--font-white);
 }
 
 .btn.blue {
@@ -62,6 +66,11 @@
 .btn.gray {
     color: var(--color-btn-font-gray);
     background-color: var(--color-btn-gray);
+}
+
+.btn.green {
+    color: black;
+    background-color: var(--T1_green);
 }
 
 .btn.none {

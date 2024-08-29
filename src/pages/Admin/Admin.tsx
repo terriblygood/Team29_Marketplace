@@ -6,6 +6,7 @@ import UserPanel from "../../components/UserPanel/UserPanel";
 import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
 import AddThingForm from "../../components/AddThingForm/AddThingForm";
+import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 
 export default function Admin() {
   const [modalActive, setModalActive] = useState<boolean>(true);
@@ -13,7 +14,11 @@ export default function Admin() {
   return (
     <>
       <h1>Пользователи</h1>
-      <UserPanel />
+      <Accordion>
+        <AccordionItem header="Список пользователей">
+          <UserPanel />
+        </AccordionItem>
+      </Accordion>
       <h1>Товары</h1>
       <Button color="blue" onClick={() => setModalActive((prev) => !prev)}>
         Добавить товар

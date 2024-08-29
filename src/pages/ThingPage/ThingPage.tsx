@@ -72,7 +72,7 @@ export default function ThingPage(): JSX.Element {
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getThing();
   }, []);
 
@@ -134,12 +134,16 @@ export default function ThingPage(): JSX.Element {
             </div>
           </SideBar>
           <MainContent>
-            <h1>{thing.name}</h1>
+            <h1>{thing.name.charAt(0).toUpperCase() + thing.name.slice(1)}</h1>
 
             <div className={style.category}>{thing.category}</div>
-            <div className={style.oneLine}></div>
+            <div className={style.oneLine}>{thing.size}</div>
+            <div className={style.oneLine}>{thing.color}</div>
+            <div className={style.oneLine}>Остаток: {thing.count} шт.</div>
+            <div className={style.oneLine}>Стоимость: {thing.price} к.</div>
 
             <div className={style.address}>{thing.description}</div>
+            <Button color="green">Добавить в корзину</Button>
             <br />
           </MainContent>
         </div>

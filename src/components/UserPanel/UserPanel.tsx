@@ -25,6 +25,7 @@ export default function UserPanel() {
 
   return (
     <div className={style.panel}>
+      <h1>Всего пользователей: {users.length}</h1>
       {users.map((el, index) => (
         <UserCard userId={el.id} key={index} />
       ))}

@@ -1,0 +1,12 @@
+.form {
+    max-width: 60dvw;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+
+
+    .specialLabel {
+        display: flex;
+        flex-direction: column;
+    }
+}
