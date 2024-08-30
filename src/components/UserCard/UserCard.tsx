@@ -3,6 +3,7 @@ import { useLayoutEffect, useState } from "react";
 import { UserDataType } from "../../types";
 import style from "./UserCard.module.scss";
 import Button from "../Button/Button";
+import { apiUrl } from "../../App";
 
 export default function UserCard({ userId }: { userId: string }) {
   useLayoutEffect(() => {}, []);
@@ -21,7 +22,7 @@ export default function UserCard({ userId }: { userId: string }) {
     const getUser = async (): Promise<void> => {
       try {
         axios
-          .get(`https://29-t1api.gortem.ru/consumers/${userId}`)
+          .get(`${apiUrl}/consumers/${userId}`)
           .then((res) => setUser(res.data))
           .catch((err) =>
             console.log("Ошибка получения информации о пользователе", err)
@@ -36,7 +37,7 @@ export default function UserCard({ userId }: { userId: string }) {
   const deleteUser = async (): Promise<void> => {
     try {
       axios
-        .delete(`https://29-t1api.gortem.ru/consumers/${userId}`)
+        .delete(`${apiUrl}/consumers/${userId}`)
         // .then((res) => setUser(res.data))
         .catch((err) => console.log("Ошибка удаления пользователя", err));
     } catch (error) {

@@ -19,7 +19,7 @@ import Button from "../../components/Button/Button";
 import { notifySuccess, notifyWarning } from "../../toasters";
 import Modal from "../../components/Modal/Modal";
 import UpdateThingForm from "../../components/UpdateThingForm/UpdateThingForm";
-import { API } from "../../App";
+import { apiUrl } from "../../App";
 
 export default function ThingPage(): JSX.Element {
   const [modalActive, setModalActive] = useState<boolean>(true);
@@ -52,13 +52,15 @@ export default function ThingPage(): JSX.Element {
 
   const getThing = async (): Promise<void> => {
     try {
+
       axios
-        .get(`${API}/products/${params.id}`)
+        .get(`${apiUrl}/products/${params.id}`)
         // .get(`${API}/products/${params.id}`)
         .then((res) => setThing(res.data))
         .catch((err) => console.log("Ошибка получения информации о вещи", err));
     } catch (error) {
-      console.log(error);
+      // Обрабатываем ошибку
+      console.error("Ошибка получения информации о вещи", error);
     }
   };
 
@@ -66,7 +68,7 @@ export default function ThingPage(): JSX.Element {
     {
       try {
         const del = await axios.delete(
-          `https://29-t1api.gortem.ru/products/${params.id}`
+          `${apiUrl}/products/${params.id}`
         );
         navigate("/");
         notifySuccess("Вещь успешно добавлена.");

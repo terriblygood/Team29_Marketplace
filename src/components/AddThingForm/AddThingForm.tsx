@@ -5,6 +5,7 @@ import axios from "axios";
 import Button from "../Button/Button";
 import { notifySuccess, notifyWarning } from "../../toasters";
 import style from "./AddThingForm.module.scss";
+import { apiUrl } from "../../App";
 
 export default function AddThingForm({
   setActive,
@@ -48,7 +49,7 @@ export default function AddThingForm({
     ) {
       try {
         const add = await axios.post(
-          `https://29-t1api.gortem.ru/products/`,
+          `${apiUrl}/products/`,
           input
         );
         notifySuccess("Вещь успешно добавлена.");

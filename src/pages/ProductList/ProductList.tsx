@@ -6,17 +6,19 @@ import { addItemToCart, increaseQuantity } from "../../store/slices/cartSlice";
 import FilterSidebar from "../FilterSidebar/FilterSidebar";
 import styles from "./ProductList.module.scss";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { apiUrl } from "../../App";
+import axios, { AxiosResponse } from "axios";
 
-// Маппинг русских категорий на английские
+
 const categoryMap: { [key: string]: string } = {
-  МЕРЧ: "MERCH",
-  КАНЦЕЛЯРИЯ: "CHANCELLERY",
-  СМАРТФОНЫ: "SMARTPHONES",
-  НОУТБУКИ: "LAPTOPS",
-  ГАДЖЕТЫ: "GADGETS",
-  ТЕЛЕВИЗОРЫ: "TVS",
-  АУДИОТЕХНИКА: "AUDIO",
+  "МЕРЧ": "MERCH",
+  "НЕМЕРЧ": "NOTMERCH",
+  "КАНЦЕЛЯРИЯ": "CHANCELLERY",
+  "СМАРТФОНЫ": "SMARTPHONES",
+  "НОУТБУКИ": "LAPTOPS",
+  "ГАДЖЕТЫ": "GADGETS",
+  "ТЕЛЕВИЗОРЫ": "TVS",
+  "АУДИОТЕХНИКА": "AUDIO",
   "ИГРОВЫЕ КОНСОЛИ": "GAME_CONSOLES",
   "КОМПЬЮТЕРНЫЕ КОМПЛЕКТУЮЩИЕ": "COMPUTER_PARTS",
   ФОТОАППАРАТЫ: "CAMERAS",
@@ -38,27 +40,36 @@ const ProductList: React.FC = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "https://29-t1api.gortem.ru/products/catalog"
+          `${apiUrl}/products/catalog`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch products");
-        }
+        } 
         const data = await response.json();
 
-        const formattedData = data.map((item: any) => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          category: item.category.toUpperCase(),
-          inStock: item.count > 0,
-          imageUrl: "",
-        }));
+        const formattedData = await Promise.all(
+          data.map(async (item: any) => {
+            // const imageResponse: AxiosResponse<Blob> = await axios.get(`
+            //   https://89f87a0035a8b7ee4a9879ef9081da17.serveo.net/products/photo/download/Products_481825-ruchka-dlya-detey-38.jpg`,
+            //   { responseType: 'blob' }
+            // );
+            // const imageUrl = URL.createObjectURL(imageResponse.data);
+            // console.log(imageResponse, '111111')
+
+            return {
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              category: item.category.toUpperCase(),
+              inStock: item.count > 0,
+              imageUrl: '', 
+            };
+          })
+        );
         dispatch(setProducts(formattedData));
 
-        // Создаем массив уникальных категорий
-        const categories: string[] = Array.from(
-          new Set(data.map((item: any) => item.category.toUpperCase()))
-        );
+
+        const categories: string[] = Array.from(new Set(data.map((item: any) => item.category.toUpperCase())));
         setUniqueCategories(categories);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -88,7 +99,7 @@ const ProductList: React.FC = () => {
 
       try {
         const response = await fetch(
-          `https://29-t1api.gortem.ru/carts/${existingCartItem.cartItemId}`,
+          `${apiUrl}/carts/${existingCartItem.cartItemId}`,
           {
             method: "POST",
             headers: {
@@ -113,12 +124,12 @@ const ProductList: React.FC = () => {
       try {
         const payload = {
           consumerId: userId,
-          productType: productType, // Используем преобразованную категорию
+          productType: productType, 
           productId: product.id,
           count: 1,
         };
-
-        const response = await fetch("https://29-t1api.gortem.ru/carts/", {
+        console.log("Sending payload:", JSON.stringify(payload));
+        const response = await fetch(`${apiUrl}/carts/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

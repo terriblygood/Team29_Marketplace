@@ -8,7 +8,6 @@ import profileIcon from "../../assets/profile-icon.svg";
 import cartIcon from "../../assets/cart-icon.svg";
 import Button from "../Button/Button";
 import Account from "../../pages/Account/Account";
-import axios from "axios";
 
 const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,8 +26,7 @@ const Header: React.FC = () => {
   
   const handleLogoClick = () => {
     navigate("/");
-    window.location.reload(); // Обновление страницы при клике на логотип(вообще больше для того чтобы сбросить все фильтры)
-    //но лучше бы добавить кноч]пку сброса фильтров, так странице не нужно будет перерисовываться
+    window.location.reload(); // Обновление страницы при клике на логотип
   };
 
   const [lk, setlk] = useState(false);
@@ -61,6 +59,12 @@ const Header: React.FC = () => {
           {uniqueItemCount > 0 && (
             <div className={styles.cartBadge}>{uniqueItemCount}</div>
           )}
+        </div>
+        <div
+          className={styles.ordersLink}
+          onClick={() => navigate("/orders")}
+        >
+          Мои заказы
         </div>
       </div>
       <Account isOpen={lk} setlk={setlk} />
