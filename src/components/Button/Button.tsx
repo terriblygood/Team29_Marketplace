@@ -1,7 +1,7 @@
 import type { ReactNode, MouseEvent } from "react";
 import React from "react";
 import clsx from "clsx";
-import style from "./Button.module.css";
+import style from "./Button.module.scss";
 import type { ColorTypes } from "../../types";
 
 type ButtonProps = {

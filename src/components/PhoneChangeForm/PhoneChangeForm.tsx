@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import type { UserDataType, UserType } from '../../types'
-import style from './PhoneChangeForm.module.css'
+import style from './PhoneChangeForm.module.scss'
 // import { useAppDispatch } from '../../../redux/hooks'
 // import { fetchUpd } from '../../../redux/user/userThunkActions'
 import Input from '../Input/Input'
