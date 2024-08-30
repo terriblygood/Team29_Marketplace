@@ -11,7 +11,11 @@ import { useAppDispatch } from "./store/hooks";
 import { fetchAuth } from "./store/userThunkActions";
 import ThingPage from "./pages/ThingPage/ThingPage";
 import Admin from "./pages/Admin/Admin";
-
+import MyOrders from "./pages/Orders/Orders";
+import OrdersPage from "./pages/Orders/Orders";
+export const apiUrl = process.env.REACT_APP_API_URL;
+console.log(process.env.REACT_APP_API_URL)
+console.log(apiUrl)
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
@@ -38,6 +42,7 @@ const App: React.FC = () => {
             <Route path="*" element={<ErrorPage />} />
             <Route path="/thing/:id" element={<ThingPage />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/orders" element={<OrdersPage />} />
           </Routes>
         </div>
       </ErrorBoundary>

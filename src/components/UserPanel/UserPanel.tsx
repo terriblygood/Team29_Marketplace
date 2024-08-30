@@ -3,6 +3,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { UserDataType } from "../../types";
 import UserCard from "../UserCard/UserCard";
 import style from "./UserPanel.module.scss";
+import { apiUrl } from "../../App";
 
 export default function UserPanel() {
   const [users, setUsers] = useState<UserDataType[]>([]);
@@ -11,7 +12,7 @@ export default function UserPanel() {
     const getUsers = async (): Promise<void> => {
       try {
         axios
-          .get(`https://29-t1api.gortem.ru/consumers/all`)
+          .get(`${apiUrl}/consumers/all`)
           .then((res) => setUsers(res.data))
           .catch((err) =>
             console.log("Ошибка получения информации о пользователях", err)

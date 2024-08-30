@@ -2,12 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { UserType, UserDataType, NotType } from "../types";
+import { apiUrl } from "../App";
 
 export const fetchAuth = createAsyncThunk(
   "user/post",
   async ({ data }: { data: UserType }) => {
     const response = await axios.post<UserType>(
-      `https://29-t1api.gortem.ru/consumers/`,
+      `${apiUrl}/consumers/`,
       data
     );
     if (response.status === 200 || 201) {
