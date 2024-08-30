@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { ChangeEvent } from "react";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
-import style from "./PasswordChangeForm.module.css";
+import style from "./PasswordChangeForm.module.scss";
 import type { UserDataType, UserType } from "../../types";
 import { notifySuccess, notifyWarning } from "../../toasters";
 import Input from "../Input/Input";

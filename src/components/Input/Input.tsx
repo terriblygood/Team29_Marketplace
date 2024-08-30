@@ -1,6 +1,6 @@
 import React from 'react'
 import type { ChangeEvent, ForwardedRef } from 'react'
-import style from './Input.module.css'
+import style from './Input.module.scss'
 
 type InputProps = {
   placeholder?: string

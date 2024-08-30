@@ -14,7 +14,7 @@ import Input from "../../components/Input/Input";
 import eyeIcon from "../../assets/eye-outline.svg";
 import closeEyeIcon from "../../assets/eye-off-outline.svg";
 
-export default function Auth(): JSX.Element {
+export default function Profile(): JSX.Element {
   const initialState = {
     id: "",
     email: "",

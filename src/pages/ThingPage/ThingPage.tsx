@@ -10,7 +10,7 @@ import {
 } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import axios from "axios";
-import style from "./ThingPage.module.css";
+import style from "./ThingPage.module.scss";
 import type { ShortThingType, ThingType } from "../../types";
 import SideBar from "../../components/SideBar/SideBar";
 import WholePage from "../../components/WholePage/WholePage";
@@ -19,6 +19,7 @@ import Button from "../../components/Button/Button";
 import { notifySuccess, notifyWarning } from "../../toasters";
 import Modal from "../../components/Modal/Modal";
 import UpdateThingForm from "../../components/UpdateThingForm/UpdateThingForm";
+import { API } from "../../App";
 
 export default function ThingPage(): JSX.Element {
   const [modalActive, setModalActive] = useState<boolean>(true);
@@ -46,10 +47,14 @@ export default function ThingPage(): JSX.Element {
   const navigate = useNavigate();
   const params = useParams();
 
+  const isAdmin = localStorage.getItem("isAdmin");
+  const isAdminBool = isAdmin ? JSON.parse(isAdmin) || false : false;
+
   const getThing = async (): Promise<void> => {
     try {
       axios
-        .get(`https://29-t1api.gortem.ru/products/${params.id}`)
+        .get(`${API}/products/${params.id}`)
+        // .get(`${API}/products/${params.id}`)
         .then((res) => setThing(res.data))
         .catch((err) => console.log("Ошибка получения информации о вещи", err));
     } catch (error) {
@@ -83,12 +88,21 @@ export default function ThingPage(): JSX.Element {
           <Button color="blue" onClick={() => navigate(-1)}>
             <span style={{ fontSize: "1.2rem" }}>{"<"} Назад</span>
           </Button>
-          <Button color="danger" onClick={deleteThing}>
-            Удалить товар
-          </Button>
-          <Button color="blue" onClick={() => setModalActive((prev) => !prev)}>
-            Обновить товар
-          </Button>
+          {isAdminBool ? (
+            <>
+              <Button color="danger" onClick={deleteThing}>
+                Удалить товар
+              </Button>
+              <Button
+                color="blue"
+                onClick={() => setModalActive((prev) => !prev)}
+              >
+                Обновить товар
+              </Button>
+            </>
+          ) : (
+            <></>
+          )}
           <Modal active={modalActive} setActive={setModalActive}>
             <UpdateThingForm
               setActive={setModalActive}
@@ -143,7 +157,23 @@ export default function ThingPage(): JSX.Element {
             <div className={style.oneLine}>Стоимость: {thing.price} к.</div>
 
             <div className={style.address}>{thing.description}</div>
-            <Button color="green">Добавить в корзину</Button>
+            {isAdminBool ? (
+              <>
+                {thing.count ? (
+                  <Button color="green">Добавить в корзину</Button>
+                ) : (
+                  <h2>Товара нет в наличии</h2>
+                )}
+              </>
+            ) : (
+              <>
+                {thing.count ? (
+                  <Button color="green">Добавить в корзину</Button>
+                ) : (
+                  <h2>Товара нет в наличии</h2>
+                )}
+              </>
+            )}
             <br />
           </MainContent>
         </div>

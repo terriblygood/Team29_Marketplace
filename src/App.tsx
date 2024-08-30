@@ -12,6 +12,13 @@ import { fetchAuth } from "./store/userThunkActions";
 import ThingPage from "./pages/ThingPage/ThingPage";
 import Admin from "./pages/Admin/Admin";
 
+export const API = process.env.REACT_APP_API_URL;
+
+if (localStorage.getItem("isAdmin`")) {
+  localStorage.setItem("isAdmin", "false");
+} else {
+}
+
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
 

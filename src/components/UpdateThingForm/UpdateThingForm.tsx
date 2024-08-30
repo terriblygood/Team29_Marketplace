@@ -5,6 +5,7 @@ import axios from "axios";
 import Button from "../Button/Button";
 import { notifySuccess, notifyWarning } from "../../toasters";
 import style from "./UpdateThingForm.module.scss";
+import { useNavigate } from "react-router-dom";
 
 export default function AddThingForm({
   setActive,
@@ -16,8 +17,7 @@ export default function AddThingForm({
   id: string;
 }) {
   const [input, setInput] = useState<ShortThingType | ThingType>(initialThing);
-  //   const [thing, setThing] = useState<ThingType>(initialThing);
-  console.log(id, "Я айди");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getThing = async (): Promise<void> => {
@@ -38,10 +38,6 @@ export default function AddThingForm({
     getThing();
   }, []);
 
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
-
   const changeHandler = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
@@ -59,8 +55,8 @@ export default function AddThingForm({
       input.description &&
       input.color &&
       input.size &&
-      input.count &&
-      input.price &&
+      input.price > 0 &&
+      input.count >= 0 &&
       input.category &&
       input.brand
     ) {
@@ -71,11 +67,12 @@ export default function AddThingForm({
         );
         notifySuccess("Вещь успешно обновлена.");
         setActive((prev) => !prev);
+        navigate("/");
       } catch (error) {
         console.log(error);
       }
     } else {
-      notifyWarning("Пожалуйста, заполните все поля.");
+      notifyWarning("Пожалуйста, заполните все поля корректно.");
     }
   };
 
@@ -113,17 +110,12 @@ export default function AddThingForm({
       </label>
       <label htmlFor="size" className={style.specialLabel}>
         Размер товара
-        <select
-          // type="text"
-          name="size"
-          onChange={changeHandler}
-          value={input.size}
-        >
+        <select name="size" onChange={changeHandler} value={input.size}>
           <option value="">Укажите размер</option>
           <option value="ONE_SIZE">One Size</option>
           <option value="XXS">XXS</option>
           <option value="XS">XS</option>
-          <option value="S">s</option>
+          <option value="S">S</option>
           <option value="M">M</option>
           <option value="L">L</option>
           <option value="XL">XL</option>
@@ -139,7 +131,6 @@ export default function AddThingForm({
           name="count"
           onChange={changeHandler}
           value={input.count.toString()}
-          // placeholder="Количество товара"
         ></Input>
       </label>
       <label htmlFor="price">
@@ -149,7 +140,6 @@ export default function AddThingForm({
           name="price"
           onChange={changeHandler}
           value={input.price.toString()}
-          // placeholder="Цена товара"
         ></Input>
       </label>
       <label htmlFor="category">
@@ -162,15 +152,20 @@ export default function AddThingForm({
           placeholder="Укажите категорию"
         ></Input>
       </label>
-      <label htmlFor="brand">
-        Брeнд
-        <Input
-          type="string"
-          name="brand"
-          onChange={changeHandler}
-          value={input.brand}
-          placeholder="Укажите бренд"
-        ></Input>
+      <label htmlFor="brand" className={style.specialLabel}>
+        Бренд
+        <select name="brand" onChange={changeHandler} value={input.brand}>
+          <option disabled value="">
+            Укажите бренд
+          </option>
+          <option value="Т1 Иннотех">Т1 Иннотех</option>
+          <option value="Т1 Интеграция">Т1 Интеграция</option>
+          <option value="Т1 Нота">Т1 Нота</option>
+          <option value="Т1 Облако">Т1 Облако</option>
+          <option value="Т1 ИИ">Т1 ИИ</option>
+          <option value="Т1 Сервионика">Т1 Сервионика</option>
+          <option value="Т1 Цифровая академия">Т1 Цифровая академия</option>
+        </select>
       </label>
       <Button
         color="blue"
