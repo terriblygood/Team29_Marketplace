@@ -9,16 +9,15 @@ import { useNavigate } from "react-router-dom";
 import { apiUrl } from "../../App";
 import axios, { AxiosResponse } from "axios";
 
-
 const categoryMap: { [key: string]: string } = {
-  "МЕРЧ": "MERCH",
-  "НЕМЕРЧ": "NOTMERCH",
-  "КАНЦЕЛЯРИЯ": "CHANCELLERY",
-  "СМАРТФОНЫ": "SMARTPHONES",
-  "НОУТБУКИ": "LAPTOPS",
-  "ГАДЖЕТЫ": "GADGETS",
-  "ТЕЛЕВИЗОРЫ": "TVS",
-  "АУДИОТЕХНИКА": "AUDIO",
+  МЕРЧ: "MERCH",
+  НЕМЕРЧ: "NOTMERCH",
+  КАНЦЕЛЯРИЯ: "CHANCELLERY",
+  СМАРТФОНЫ: "SMARTPHONES",
+  НОУТБУКИ: "LAPTOPS",
+  ГАДЖЕТЫ: "GADGETS",
+  ТЕЛЕВИЗОРЫ: "TVS",
+  АУДИОТЕХНИКА: "AUDIO",
   "ИГРОВЫЕ КОНСОЛИ": "GAME_CONSOLES",
   "КОМПЬЮТЕРНЫЕ КОМПЛЕКТУЮЩИЕ": "COMPUTER_PARTS",
   ФОТОАППАРАТЫ: "CAMERAS",
@@ -39,12 +38,10 @@ const ProductList: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          `${apiUrl}/products/catalog`
-        );
+        const response = await fetch(`${apiUrl}/products/catalog`);
         if (!response.ok) {
           throw new Error("Failed to fetch products");
-        } 
+        }
         const data = await response.json();
 
         const formattedData = await Promise.all(
@@ -62,14 +59,15 @@ const ProductList: React.FC = () => {
               price: item.price,
               category: item.category.toUpperCase(),
               inStock: item.count > 0,
-              imageUrl: '', 
+              imageUrl: "",
             };
           })
         );
         dispatch(setProducts(formattedData));
 
-
-        const categories: string[] = Array.from(new Set(data.map((item: any) => item.category.toUpperCase())));
+        const categories: string[] = Array.from(
+          new Set(data.map((item: any) => item.category.toUpperCase()))
+        );
         setUniqueCategories(categories);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -124,7 +122,7 @@ const ProductList: React.FC = () => {
       try {
         const payload = {
           consumerId: userId,
-          productType: productType, 
+          productType: productType,
           productId: product.id,
           count: 1,
         };
@@ -180,13 +178,10 @@ const ProductList: React.FC = () => {
           </p>
         ) : (
           products.map((product) => (
-            <div
-              key={product.id}
-              className={styles.productCard}
-              onClick={() => navigate(`/thing/${product.id}`)}
-            >
+            <div key={product.id} className={styles.productCard}>
               <img
                 // src={product.imageUrl}
+                onClick={() => navigate(`/thing/${product.id}`)}
                 src="https://0b0a8037e39b1be03a614e5be55792c5.serveo.net/product-photo/Products_481825-ruchka-dlya-detey-38.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=admin%2F20240830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240830T211700Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=142b5551007c8421190bcc27d3e0b8a2ca6a4ab4e097b83b10f73aa74ec8d932"
                 alt={product.name}
                 className={styles.productImage}
