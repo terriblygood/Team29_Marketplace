@@ -1,6 +1,6 @@
 import React from 'react'
 import type { ReactNode } from 'react'
-import style from './MainContent.module.css'
+import style from './MainContent.module.scss'
 
 type MainContentProps = {
   children: ReactNode

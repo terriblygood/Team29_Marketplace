@@ -15,7 +15,7 @@ import eyeIcon from "../../assets/eye-outline.svg";
 import closeEyeIcon from "../../assets/eye-off-outline.svg";
 import { apiUrl } from "../../App";
 
-export default function Auth(): JSX.Element {
+export default function Profile(): JSX.Element {
   const initialState = {
     id: "",
     email: "",

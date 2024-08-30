@@ -1,6 +1,6 @@
 import React from 'react'
 import type { ReactNode } from 'react'
-import style from './WholePage.module.css'
+import style from './WholePage.module.scss'
 
 type WholePageProps = {
   children: ReactNode

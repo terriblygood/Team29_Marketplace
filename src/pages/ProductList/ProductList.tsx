@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { apiUrl } from "../../App";
 import axios, { AxiosResponse } from "axios";
 
-// Маппинг русских категорий на английские
+
 const categoryMap: { [key: string]: string } = {
   "МЕРЧ": "MERCH",
   "НЕМЕРЧ": "NOTMERCH",
@@ -21,7 +21,7 @@ const categoryMap: { [key: string]: string } = {
   "АУДИОТЕХНИКА": "AUDIO",
   "ИГРОВЫЕ КОНСОЛИ": "GAME_CONSOLES",
   "КОМПЬЮТЕРНЫЕ КОМПЛЕКТУЮЩИЕ": "COMPUTER_PARTS",
-  "ФОТОАППАРАТЫ": "CAMERAS",
+  ФОТОАППАРАТЫ: "CAMERAS",
   "УМНЫЕ ЧАСЫ": "SMARTWATCHES",
 };
 
@@ -67,6 +67,7 @@ const ProductList: React.FC = () => {
           })
         );
         dispatch(setProducts(formattedData));
+
 
         const categories: string[] = Array.from(new Set(data.map((item: any) => item.category.toUpperCase())));
         setUniqueCategories(categories);
@@ -162,9 +163,12 @@ const ProductList: React.FC = () => {
 
   return (
     <div className={styles.productPage}>
-      <FilterSidebar categories={uniqueCategories} onResetFilters={() => {
-        // Дополнительная логика для сброса фильтров
-      }} />
+      <FilterSidebar
+        categories={uniqueCategories}
+        onResetFilters={() => {
+          // Дополнительная логика для сброса фильтров
+        }}
+      />
       <div className={styles.productList}>
         {allProducts.length === 0 ? (
           <p className={styles.noProducts}>
@@ -182,22 +186,24 @@ const ProductList: React.FC = () => {
               onClick={() => navigate(`/thing/${product.id}`)}
             >
               <img
-                src={product.imageUrl}
+                // src={product.imageUrl}
+                src="https://0b0a8037e39b1be03a614e5be55792c5.serveo.net/product-photo/Products_481825-ruchka-dlya-detey-38.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=admin%2F20240830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240830T211700Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=142b5551007c8421190bcc27d3e0b8a2ca6a4ab4e097b83b10f73aa74ec8d932"
                 alt={product.name}
                 className={styles.productImage}
               />
               <h3 className={styles.productName}>{product.name}</h3>
               <p className={styles.productPrice}>{product.price} к.</p>
-              <button
-                className={styles.addToCartButton}
-                onClick={(e) => {
-                  // e.stopPropagation(); // Чтобы не закрывалась страница при нажатии на кнопку
-                  handleAddToCart(product);
-                }}
-                disabled={!product.inStock}
-              >
-                В корзину
-              </button>
+              {product.inStock ? (
+                <button
+                  className={styles.addToCartButton}
+                  onClick={() => handleAddToCart(product)}
+                  disabled={!product.inStock}
+                >
+                  В корзину
+                </button>
+              ) : (
+                <span>Товара нет в наличии</span>
+              )}
             </div>
           ))
         )}

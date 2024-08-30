@@ -13,9 +13,16 @@ import ThingPage from "./pages/ThingPage/ThingPage";
 import Admin from "./pages/Admin/Admin";
 import MyOrders from "./pages/Orders/Orders";
 import OrdersPage from "./pages/Orders/Orders";
+
 export const apiUrl = process.env.REACT_APP_API_URL;
-console.log(process.env.REACT_APP_API_URL)
-console.log(apiUrl)
+export const API = process.env.REACT_APP_API_URL;
+
+if (localStorage.getItem("isAdmin`")) {
+  localStorage.setItem("isAdmin", "false");
+} else {
+}
+
+
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
 

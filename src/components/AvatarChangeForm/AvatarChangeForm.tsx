@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import axios from 'axios'
 import type { AxiosResponse } from 'axios'
-import styles from './AvatarChangeForm.module.css'
+import styles from './AvatarChangeForm.module.scss'
 import type { UserType } from '../../types'
 // import { useAppDispatch } from '../../../redux/hooks'
 // import { fetchUpd } from '../../../redux/user/userThunkActions'

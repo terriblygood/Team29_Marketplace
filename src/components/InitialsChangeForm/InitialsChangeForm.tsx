@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import React, { useEffect, useState } from "react";
 import type { UserDataType, UserType } from "../../types";
-import style from "./InitialsChangeForm.module.css";
+import style from "./InitialsChangeForm.module.scss";
 import { useAppDispatch } from "../../store/hooks";
 import { fetchUpd } from "../../store/userThunkActions";
 import { notifySuccess, notifyWarning } from "../../toasters";

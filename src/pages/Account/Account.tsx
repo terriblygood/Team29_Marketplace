@@ -7,7 +7,7 @@ import { notifySuccess, notifyWarning } from "../../toasters";
 import axios from "axios";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
-import styles from "./Account.module.css";
+import styles from "./Account.module.scss";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Modal from "../../components/Modal/Modal";
 import PasswordChangeForm from "../../components/PasswordChangeForm/PasswordChangeForm";
@@ -37,20 +37,17 @@ export default function Account({
   const [modalActive6, setModalActive6] = useState<boolean>(true);
   const [modalActive7, setModalActive7] = useState<boolean>(true);
 
-  const user = useAppSelector((store) => store.user);
+  // const user = useAppSelector((store) => store.user);
 
   //! Загрушка для тестирования
 
-  // const user = {
-  //   id: 1,
-  //   firstName: "Ivan",
-  //   middleName: "",
-  //   lastName: "Ivanov",
-  //   email: "email",
-  //   phone: "phone",
-  //   avatarUrl:
-  //     "https://baldezh.top/uploads/posts/2021-07/1627505272_53-funart-pro-p-korgi-vzroslii-zhivotnie-krasivo-foto-61.jpg",
-  // };
+  const user = {
+    id: "",
+    name: "Ivan",
+    email: "Ivan@mail.ru",
+    phoneNumber: "+7 999 999 99 99",
+    coins: 0,
+  };
 
   const deleteAvatar = async (): Promise<void> => {
     //   try {
