@@ -1,0 +1,6 @@
+services:
+  frontend:
+    image: 10.4.56.80:5000/29_frontend_t1
+    container_name: 29_frontend_t1
+    ports:
+      - '1337:80'
