@@ -6,19 +6,22 @@ import { addItemToCart, increaseQuantity } from "../../store/slices/cartSlice";
 import FilterSidebar from "../FilterSidebar/FilterSidebar";
 import styles from "./ProductList.module.scss";
 import { useNavigate } from "react-router-dom";
+import { apiUrl } from "../../App";
+import axios, { AxiosResponse } from "axios";
+import { url } from "inspector";
 
-// Маппинг русских категорий на английские
 const categoryMap: { [key: string]: string } = {
-  "МЕРЧ": "MERCH",
-  "КАНЦЕЛЯРИЯ": "CHANCELLERY",
-  "СМАРТФОНЫ": "SMARTPHONES",
-  "НОУТБУКИ": "LAPTOPS",
-  "ГАДЖЕТЫ": "GADGETS",
-  "ТЕЛЕВИЗОРЫ": "TVS",
-  "АУДИОТЕХНИКА": "AUDIO",
+  МЕРЧ: "MERCH",
+  НЕМЕРЧ: "NOTMERCH",
+  КАНЦЕЛЯРИЯ: "CHANCELLERY",
+  СМАРТФОНЫ: "SMARTPHONES",
+  НОУТБУКИ: "LAPTOPS",
+  ГАДЖЕТЫ: "GADGETS",
+  ТЕЛЕВИЗОРЫ: "TVS",
+  АУДИОТЕХНИКА: "AUDIO",
   "ИГРОВЫЕ КОНСОЛИ": "GAME_CONSOLES",
   "КОМПЬЮТЕРНЫЕ КОМПЛЕКТУЮЩИЕ": "COMPUTER_PARTS",
-  "ФОТОАППАРАТЫ": "CAMERAS",
+  ФОТОАППАРАТЫ: "CAMERAS",
   "УМНЫЕ ЧАСЫ": "SMARTWATCHES",
 };
 
@@ -36,26 +39,36 @@ const ProductList: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "https://29-t1api.gortem.ru/products/catalog"
-        );
+        const response = await fetch(`${apiUrl}/products/catalog`);
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
         const data = await response.json();
 
-        const formattedData = data.map((item: any) => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          category: item.category.toUpperCase(),
-          inStock: item.count > 0,
-          imageUrl: "",
-        }));
+        const formattedData = await Promise.all(
+          data.map(async (item: any) => {
+            // const imageResponse: AxiosResponse<Blob> = await axios.get(`
+            //   ${apiUrl}/products/photo/download/Products_Products_481825-ruchka-dlya-detey-38.jpg`,
+            //   { responseType: 'blob' }
+            // );
+            // const imageUrl = URL.createObjectURL(imageResponse.data);
+            // console.log(imageUrl, '111111')
+
+            return {
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              category: item.category.toUpperCase(),
+              inStock: item.count > 0,
+              imageUrl: '',
+            };
+          })
+        );
         dispatch(setProducts(formattedData));
 
-        // Создаем массив уникальных категорий
-        const categories: string[] = Array.from(new Set(data.map((item: any) => item.category.toUpperCase())));
+        const categories: string[] = Array.from(
+          new Set(data.map((item: any) => item.category.toUpperCase()))
+        );
         setUniqueCategories(categories);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -85,7 +98,7 @@ const ProductList: React.FC = () => {
 
       try {
         const response = await fetch(
-          `https://29-t1api.gortem.ru/carts/${existingCartItem.cartItemId}`,
+          `${apiUrl}/carts/${existingCartItem.cartItemId}`,
           {
             method: "POST",
             headers: {
@@ -110,12 +123,12 @@ const ProductList: React.FC = () => {
       try {
         const payload = {
           consumerId: userId,
-          productType: productType, // Используем преобразованную категорию
+          productType: productType,
           productId: product.id,
           count: 1,
         };
-
-        const response = await fetch("https://29-t1api.gortem.ru/carts/", {
+        console.log("Sending payload:", JSON.stringify(payload));
+        const response = await fetch(`${apiUrl}/carts/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -149,9 +162,12 @@ const ProductList: React.FC = () => {
 
   return (
     <div className={styles.productPage}>
-      <FilterSidebar categories={uniqueCategories} onResetFilters={() => {
-        // Дополнительная логика для сброса фильтров
-      }} />
+      <FilterSidebar
+        categories={uniqueCategories}
+        onResetFilters={() => {
+          // Дополнительная логика для сброса фильтров
+        }}
+      />
       <div className={styles.productList}>
         {allProducts.length === 0 ? (
           <p className={styles.noProducts}>
@@ -163,25 +179,27 @@ const ProductList: React.FC = () => {
           </p>
         ) : (
           products.map((product) => (
-            <div
-              key={product.id}
-              className={styles.productCard}
-              onClick={() => navigate(`/thing/${product.id}`)}
-            >
+            <div key={product.id} className={styles.productCard}>
               <img
-                src={product.imageUrl}
+                // src={product.imageUrl}
+                onClick={() => navigate(`/thing/${product.id}`)}
+                src="https://29-t1api.gortem.ru/products/photo/download/Products_Products_481825-ruchka-dlya-detey-38.jpg"
                 alt={product.name}
                 className={styles.productImage}
               />
               <h3 className={styles.productName}>{product.name}</h3>
               <p className={styles.productPrice}>{product.price} к.</p>
-              <button
-                className={styles.addToCartButton}
-                onClick={() => handleAddToCart(product)}
-                disabled={!product.inStock}
-              >
-                В корзину
-              </button>
+              {product.inStock ? (
+                <button
+                  className={styles.addToCartButton}
+                  onClick={() => handleAddToCart(product)}
+                  disabled={!product.inStock}
+                >
+                  В корзину
+                </button>
+              ) : (
+                <span>Товара нет в наличии</span>
+              )}
             </div>
           ))
         )}

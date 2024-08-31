@@ -13,8 +13,9 @@ import { notifySuccess, notifyWarning } from "../../toasters";
 import Input from "../../components/Input/Input";
 import eyeIcon from "../../assets/eye-outline.svg";
 import closeEyeIcon from "../../assets/eye-off-outline.svg";
+import { apiUrl } from "../../App";
 
-export default function Auth(): JSX.Element {
+export default function Profile(): JSX.Element {
   const initialState = {
     id: "",
     email: "",
@@ -43,7 +44,7 @@ export default function Auth(): JSX.Element {
     //! Нужно починить после того, как заработает эндпоинт для проверки почты
 
     // const checkMail = await axios.get(
-    //   `https://29-t1api.gortem.ru/consumers/email/?e=${inputs.email}`
+    //   `${apiUrl}/consumers/email/?e=${inputs.email}`
     // );
 
     // console.log(checkMail.data, 'Я результат checkmail');

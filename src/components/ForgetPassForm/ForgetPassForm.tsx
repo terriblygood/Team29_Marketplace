@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import type { UserDataType } from "../../types";
 import { notifySuccess, notifyWarning } from "../../toasters";
-import styles from "./ForgetPassForm.module.css";
+import styles from "./ForgetPassForm.module.scss";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 

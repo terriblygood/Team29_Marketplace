@@ -55,3 +55,15 @@ export type NotType = {
   initiator: number;
   reciever: number;
 };
+
+export type OrderType = {
+  id: string;
+  consumerId: string;
+  productType: string;
+  productId: string;
+  status: string;
+  orderDate: string;
+  count: number;
+  price: number;
+  title: string;
+}

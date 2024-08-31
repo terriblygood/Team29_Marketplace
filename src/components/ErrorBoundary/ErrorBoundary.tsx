@@ -19,12 +19,11 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children }) => {
       setHasError(true);
     };
 
-    // Подписываемся на событие ошибок
+
     window.addEventListener("error", errorHandler);
     window.addEventListener("unhandledrejection", unhandledRejectionHandler);
 
     return () => {
-      // Отписываемся от событий при размонтировании 
       window.removeEventListener("error", errorHandler);
       window.removeEventListener("unhandledrejection", unhandledRejectionHandler);
     };
