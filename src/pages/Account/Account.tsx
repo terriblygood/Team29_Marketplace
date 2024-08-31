@@ -37,17 +37,17 @@ export default function Account({
   const [modalActive6, setModalActive6] = useState<boolean>(true);
   const [modalActive7, setModalActive7] = useState<boolean>(true);
 
-  // const user = useAppSelector((store) => store.user);
+  const user = useAppSelector((store) => store.user);
 
   //! Загрушка для тестирования
 
-  const user = {
-    id: "",
-    name: "Ivan",
-    email: "Ivan@mail.ru",
-    phoneNumber: "+7 999 999 99 99",
-    coins: 0,
-  };
+  // const user = {
+  //   id: "",
+  //   name: "Ivan",
+  //   email: "Ivan@mail.ru",
+  //   phoneNumber: "+7 999 999 99 99",
+  //   coins: 0,
+  // };
 
   const deleteAvatar = async (): Promise<void> => {
     //   try {
