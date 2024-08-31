@@ -21,3 +21,5 @@
 Normalize
 Иконки
 Компоненты-скелетоны
+
+Репозиторий GitHub: https://github.com/terriblygood/Team29_Marketplace
