@@ -8,6 +8,7 @@ import styles from "./ProductList.module.scss";
 import { useNavigate } from "react-router-dom";
 import { apiUrl } from "../../App";
 import axios, { AxiosResponse } from "axios";
+import { url } from "inspector";
 
 const categoryMap: { [key: string]: string } = {
   МЕРЧ: "MERCH",
@@ -47,11 +48,11 @@ const ProductList: React.FC = () => {
         const formattedData = await Promise.all(
           data.map(async (item: any) => {
             // const imageResponse: AxiosResponse<Blob> = await axios.get(`
-            //   https://89f87a0035a8b7ee4a9879ef9081da17.serveo.net/products/photo/download/Products_481825-ruchka-dlya-detey-38.jpg`,
+            //   ${apiUrl}/products/photo/download/Products_Products_481825-ruchka-dlya-detey-38.jpg`,
             //   { responseType: 'blob' }
             // );
             // const imageUrl = URL.createObjectURL(imageResponse.data);
-            // console.log(imageResponse, '111111')
+            // console.log(imageUrl, '111111')
 
             return {
               id: item.id,
@@ -59,7 +60,7 @@ const ProductList: React.FC = () => {
               price: item.price,
               category: item.category.toUpperCase(),
               inStock: item.count > 0,
-              imageUrl: "",
+              imageUrl: '',
             };
           })
         );
@@ -182,7 +183,7 @@ const ProductList: React.FC = () => {
               <img
                 // src={product.imageUrl}
                 onClick={() => navigate(`/thing/${product.id}`)}
-                src="https://0b0a8037e39b1be03a614e5be55792c5.serveo.net/product-photo/Products_481825-ruchka-dlya-detey-38.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=admin%2F20240830%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240830T211700Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=142b5551007c8421190bcc27d3e0b8a2ca6a4ab4e097b83b10f73aa74ec8d932"
+                src="https://29-t1api.gortem.ru/products/photo/download/Products_Products_481825-ruchka-dlya-detey-38.jpg"
                 alt={product.name}
                 className={styles.productImage}
               />

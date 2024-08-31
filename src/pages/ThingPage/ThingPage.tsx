@@ -1,5 +1,7 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import axios from "axios";
+import style from "./ThingPage.module.scss";
 import {
   CarouselProvider,
   Slider,
@@ -9,9 +11,6 @@ import {
   ImageWithZoom,
 } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
-import axios from "axios";
-import style from "./ThingPage.module.scss";
-import type { ShortThingType, ThingType } from "../../types";
 import SideBar from "../../components/SideBar/SideBar";
 import WholePage from "../../components/WholePage/WholePage";
 import MainContent from "../../components/MainContent/MainContent";
@@ -19,10 +18,20 @@ import Button from "../../components/Button/Button";
 import { notifySuccess, notifyWarning } from "../../toasters";
 import Modal from "../../components/Modal/Modal";
 import UpdateThingForm from "../../components/UpdateThingForm/UpdateThingForm";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { addItemToCart, increaseQuantity } from "../../store/slices/cartSlice";
 import { apiUrl } from "../../App";
 
+// Маппинг русских категорий на английские
+const categoryMap: { [key: string]: string } = {
+  МЕРЧ: "MERCH",
+  КАНЦЕЛЯРИЯ: "CHANCELLERY",
+  ОДЕЖДА: "CLOTHES",
+  // Добавьте другие категории по мере необходимости
+};
+
 export default function ThingPage(): JSX.Element {
-  const [modalActive, setModalActive] = useState<boolean>(true);
   const initialThing = {
     // id: "1",
     name: "Худи",
@@ -41,11 +50,12 @@ export default function ThingPage(): JSX.Element {
     "https://avatars.mds.yandex.net/i?id=4075d77f357980cdd6ba7df20b0af09d_l-12626686-images-thumbs&n=13",
     "https://avatars.mds.yandex.net/i?id=7426e9da9d5da6df81f5c0dee6d38eec_l-5241638-images-thumbs&n=13",
   ];
-
-  const [thing, setThing] = useState<ShortThingType>(initialThing);
-
+  const [modalActive, setModalActive] = useState<boolean>(true);
+  const [thing, setThing] = useState<any>(null);
   const navigate = useNavigate();
   const params = useParams();
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   const isAdmin = localStorage.getItem("isAdmin");
   const isAdminBool = isAdmin ? JSON.parse(isAdmin) || false : false;
@@ -55,7 +65,7 @@ export default function ThingPage(): JSX.Element {
 
       axios
         .get(`${apiUrl}/products/${params.id}`)
-        // .get(`${API}/products/${params.id}`)
+        
         .then((res) => setThing(res.data))
         .catch((err) => console.log("Ошибка получения информации о вещи", err));
     } catch (error) {
@@ -79,9 +89,92 @@ export default function ThingPage(): JSX.Element {
     }
   };
 
+  const handleAddToCart = async () => {
+    const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
+    const existingCartItem = cartItems.find((item) => item.id === thing.id);
+
+    if (!userId) {
+      console.error("User ID not found or invalid");
+      return;
+    }
+
+    const productType =
+      categoryMap[thing.category.toUpperCase()] || thing.category;
+
+    if (existingCartItem) {
+      if (!existingCartItem.cartItemId) {
+        console.error("Cart item ID is undefined. Cannot update cart item.");
+        return;
+      }
+
+      try {
+        const response = await axios.post(
+          `${apiUrl}/carts/${existingCartItem.cartItemId}`,
+          {
+            count: existingCartItem.quantity + 1,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.status !== 200) {
+          console.error("Failed to update cart item:", response.data);
+          return;
+        }
+
+        dispatch(increaseQuantity(thing.id));
+      } catch (error) {
+        console.error("Error updating cart item:", error);
+      }
+    } else {
+      try {
+        const payload = {
+          consumerId: userId,
+          productType: productType,
+          productId: thing.id,
+          count: 1,
+        };
+        console.log("Sending payload:", JSON.stringify(payload));
+        const response = await axios.post(`${apiUrl}/carts/`, payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status !== 200) {
+          console.error("Failed to add item to cart:", response.data);
+          return;
+        }
+
+        const result = response.data;
+
+        if (result.id) {
+          dispatch(
+            addItemToCart({
+              ...thing,
+              quantity: 1,
+              cartItemId: result.id,
+            })
+          );
+        } else {
+          console.error("Response does not contain cartItemId:", result);
+        }
+      } catch (error) {
+        console.error("Error adding item to cart:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     getThing();
   }, []);
+
+  if (!thing) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <WholePage>
@@ -102,9 +195,7 @@ export default function ThingPage(): JSX.Element {
                 Обновить товар
               </Button>
             </>
-          ) : (
-            <></>
-          )}
+          ) : null}
           <Modal active={modalActive} setActive={setModalActive}>
             <UpdateThingForm
               setActive={setModalActive}
@@ -119,30 +210,18 @@ export default function ThingPage(): JSX.Element {
               <CarouselProvider
                 naturalSlideWidth={100}
                 naturalSlideHeight={100}
-                // totalSlides={thing.Photos.length}
                 totalSlides={3}
               >
-                {/* <Slider>
-                  {thing.Photos.map((photo, index) => (
-                    <Slide key={`img-${photo.id}`} index={index}>
-                    <ImageWithZoom
-                    className={`${style.photo}`}
-                    src={`${import.meta.env.VITE_THINGS}/${photo.photoUrl}`}
-                    alt="Вещь"
-                    />
-                    </Slide>
-                    ))}
-                    </Slider> */}
                 <Slider>
-                  {photos.map((photo, index) => (
-                    <Slide key={`img-${photo}`} index={index}>
+                  {photos.map((photo: string, index: number) => (
+                    <Slide key={`img-${index}`} index={index}>
                       <ImageWithZoom
                         className={`${style.photo}`}
                         src={photo}
                         alt="Вещь"
                       />
                     </Slide>
-                  ))}
+                  ))} 
                 </Slider>
                 <ButtonBack>Back</ButtonBack>
                 <ButtonNext>Next</ButtonNext>
@@ -159,24 +238,13 @@ export default function ThingPage(): JSX.Element {
             <div className={style.oneLine}>Стоимость: {thing.price} к.</div>
 
             <div className={style.address}>{thing.description}</div>
-            {isAdminBool ? (
-              <>
-                {thing.count ? (
-                  <Button color="green">Добавить в корзину</Button>
-                ) : (
-                  <h2>Товара нет в наличии</h2>
-                )}
-              </>
+            {thing.count ? (
+              <Button color="green" onClick={handleAddToCart}>
+                Добавить в корзину
+              </Button>
             ) : (
-              <>
-                {thing.count ? (
-                  <Button color="green">Добавить в корзину</Button>
-                ) : (
-                  <h2>Товара нет в наличии</h2>
-                )}
-              </>
+              <h2>Товара нет в наличии</h2>
             )}
-            <br />
           </MainContent>
         </div>
       </div>
